@@ -1,0 +1,12 @@
+body{font-size:10pt;font-family:Tahoma;}
+h1{font-size:18pt;color:orange;font-weight:normal;}
+h2{font-size:14pt;color:#A03;font-weight:normal;}
+h3{font-size:10pt;color:#A03;font-weight:normal;}
+div#main{width:90%;padding:40px;}
+#topline{margin:0 0 0 auto;width:200px;}
+h1#zag{width:500px;margin:0 auto;padding-bottom:20px;}
+a.h3:link, a.h3:visited, a.h3:hover{font-size:10pt;color:#A03;font-weight:normal;}
+a.h3:hover{font-weight:bold;}
+a.lic, a.lic:hover, a.lic:link, a.lic:visited{text-decoration:none;color:#000;}
+a.lic:hover{font-weight:bold;}
+a.back, a.back:hover, a.back:link, a.back:visited{text-decoration:underline;font-size:14pt;color:green;}
