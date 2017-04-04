@@ -22,16 +22,21 @@
         <!-- Table Body -->
         <?php foreach($this->matrix as $row => $columns): ?>
             <tr>
-                <?php foreach($columns as $column => $value): ?>
+                <?php foreach($this->columns as $column => $empty): ?>
+                    <?php $value = $this->matrix[$row][$column] ?>
                     <?php if ($this->table->getColumnType($column) == 'hidden'): ?>
                         <?php continue; ?>
                     <?php endif; ?>
                     <td style='<?php echo $this->table->getCellAppearance($row, $column) ?>;height: <?php echo $this->rowHeight ?>;padding-left:8px;'>
                         <!-- No edit rights -->
-                        <?php if( !$this->table->auth->getRight('edit') ): ?>
+                        <?php if( !$this->table->auth->getRight('edit') || isset($this->links[$row][$column])): ?>
                             <!-- Text with hyperlink -->
-                            <?php if( isset($this->links[$row][$column]) && !$this->auth->getRight('edit')): ?>
-                                <a href='<?php echo $this->links[$row][$column] ?>' class='no_underlined'>
+                            <?php if ( isset($this->links[$row][$column])): ?>
+                                <a href='<?php echo $this->links[$row][$column]['href'] ?>'
+                                   class='no_underlined'
+                                   style='<?php echo $this->appearance[$row][$column]['style'] ?>'
+                                   onclick='<?php echo $this->appearance[$row][$column]['onclick'] ?>'
+                                >
                                     <?php echo $value ?>
                                 </a>
                             <!-- Only text -->
@@ -60,3 +65,31 @@
         <!-- //Table Body -->
     </table>
 <?php $this->stop('body') ?>
+
+<?php $this->start('topmenu') ?>
+    <!-- Top Menu -->
+    <div id='menu_top'>
+        <div id='menu_top_left_part'>
+            <?php $topmenu_item_iteration = 1 ?>
+            <?php $topmenu_items = (new Entities\TopMenu($this->table->country))->getList() ?>
+            <?php if ( count($topmenu_items) > 0): ?>
+                <?php foreach ($topmenu_items as $item): ?>
+                    <a href='<?php echo $item['href'] ?>' class='<?php echo $item['class'] ?>'><?php echo $item['name_rus'] ?></a>
+                    <span class='divider'></span>
+                    <?php if ($topmenu_item_iteration % 7 == 0): ?>
+                        <br/>
+                    <?php endif; ?>
+                    <?php $topmenu_item_iteration++ ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                Нет пунктов для верхнего меню.
+            <?php endif; ?>
+        </div>
+        <div id='menu_top_middle_part'>
+        </div>
+        <div id='menu_top_right_part'>
+            Логин: {login}<span style='width:100px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="index.php?action=logout" class='logout'>Выйти</a>
+        </div>
+    </div>
+    <!-- //Top Menu -->
+<?php $this->stop('topmenu') ?>

@@ -5,7 +5,12 @@ use Core\Tables\PatentsTable;
 
 class MainController extends Controller
 {
-    public function indexAction($country)
+    public function indexAction()
+    {
+        return $this->listAction('russia', 'patents');
+    }
+    
+    public function listAction($country, $object)
     {
         $table = new PatentsTable();
         $table->country = $country;
@@ -15,16 +20,16 @@ class MainController extends Controller
     public function deleteAction()
     {
 	if(get_user_group($_SESSION['user'])=="writer"){
-		db_query("DELETE FROM `patents` WHERE `id`=".@$_GET['id']);
-		header("location: ".uri_make('action', ''));
+            db_query("DELETE FROM `patents` WHERE `id`=".@$_GET['id']);
+            header("location: ".uri_make('action', ''));
 	}
     }
     
     public function addAction()
     {
         if(get_user_group($_SESSION['user'])=="writer"){
-                db_query("INSERT INTO `patents` SET `country_name`='".get_country()."'");
-                header("location: ".uri_make('action', ''));
+            db_query("INSERT INTO `patents` SET `country_name`='".get_country()."'");
+            header("location: ".uri_make('action', ''));
         }
     }
     

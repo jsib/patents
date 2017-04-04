@@ -26,11 +26,10 @@ class TopMenu
     {
         //Retrieve all top menu items
         $result = $this->db->prepare("
-            SELECT *
+            SELECT
+                *
             FROM
-                `menu`
-            WHERE
-                `area`='top'
+                `countries`
             ORDER BY
                 `order` ASC
         ")
@@ -47,7 +46,8 @@ class TopMenu
         
         //Loop over menu items
         foreach( $items as $id => $item ) {
-            $items[$id]['class'] = get_class_depend_on_uri( "=", $this->country, $item['label'] );
+            $items[$id]['class'] = get_class_depend_on_uri( "=", $this->country, $item['name'] );
+            $items[$id]['href'] = '/'.$item['name'].'/patents/';
         }
 
         return $items;

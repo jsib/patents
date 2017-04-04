@@ -125,7 +125,7 @@ class Auth
      */
     public function getRight($action)
     {
-        
+        return true;
     }
     
 }

@@ -4,4 +4,5 @@
  * This file describes routes to controllers&actions
  */
 
-$route->add('/{country}', 'Main:index');
+$route->add('/', 'Main:index');
+$route->add('/{country}/{object}/', 'Main:list');

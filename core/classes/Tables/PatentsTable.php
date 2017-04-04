@@ -4,13 +4,19 @@ namespace Core\Tables;
 
 use Core\Table\Table;
 use Core\Date\Date;
+use Entities\Country;
 
 class PatentsTable extends Table
 {   
     /**
-     * We build table for this country
+     * Table's country name
      */
     public $country;
+    
+    /**
+     * Table's country russian name
+     */
+    public $country_rus;
     
     protected function getData()
     {
@@ -56,9 +62,12 @@ class PatentsTable extends Table
                 $this->links[$id]['delete']['href'] =
                     uri_make( ['action' => 'delete_patent', 'id' => $id] );
 
-                $this->appearance[$id]['delete']['style'] = "color:red;";
+                $this->appearance[$id]['delete']['style'] = 'color:red;';
                 $this->appearance[$id]['delete']['onclick'] = 
                     "if(!confirm(\"Удалить?\")) return false;";
+            } else {
+                $this->appearance[$id]['delete']['style'] = '';
+                $this->appearance[$id]['delete']['onclick'] = '';
             }
 
             //Clean empty dates
@@ -96,19 +105,22 @@ class PatentsTable extends Table
     }
     
     protected function setColumns() {
-        //Set columns type
-        $this->setColumnType('id', 'hidden');
-        $this->setColumnType('priority', 'date');
-        $this->setColumnType('paid_before', 'date');
-        $this->setColumnType('expire', 'date');
-        
-        //Set columns width
+        //Set columns widths! Keep order here!
         $this->setColumnWidth('name', '260px');
+        $this->setColumnWidth('comment', '260px');
         $this->setColumnWidth('certificate', '150px');
         $this->setColumnWidth('request', '150px');
         $this->setColumnWidth('priority', '150px');
         $this->setColumnWidth('registration', '150px');
         $this->setColumnWidth('expire', '150px');
+        $this->setColumnWidth('paid_before', '150px');
+        $this->setColumnWidth('delete', '70px');
+
+        //Set columns type
+        $this->setColumnType('id', 'hidden');
+        $this->setColumnType('priority', 'date');
+        $this->setColumnType('paid_before', 'date');
+        $this->setColumnType('expire', 'date');
         
         //Set columns input fields width
         $this->setColumnInputWidth('name', '260px');
@@ -123,6 +135,13 @@ class PatentsTable extends Table
     {
         $this->setRowHeight('28px');
         $this->setBorderWidth(1);
+        //Задаем сортировку по умолчанию
+//        $table['sort_default']='id';
+
+        //Задаем направление сортировки по умолчанию
+//        $table['sort_direction_default']='asc';
+        $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
+        
     }
 }
 

@@ -1,11 +1,18 @@
 <?php
 
-namespace App\Entities;
+namespace Entities;
 
 use Core\Database\Database;
 
 class Country
 {
+    public $db;
+    
+    public function __construct()
+    {
+        $this->db = new Database();
+    }
+    
     public function getList()
     {
         $result = $this->db->prepare("SELECT * FROM `countries`")
@@ -19,17 +26,20 @@ class Country
         return $countries;
     }
     
-    public function getCountry()
+    public function getCountry($name)
     {
-        $countries = $this->getList();
-
-        if(isset($countries[@$_GET['country']])){
-                $country_name=@$_GET['country'];
-        }else{
-                $country_name="russia";
+        //Query database
+        $result = $this->db->prepare("SELECT * FROM `countries` WHERE `name`=?")
+            ->bindParam('s', $name)
+            ->exec()
+            ->getResult();
+        
+        //No countries with this name
+        if ($result->numRows() == 0) {
+            return false;
         }
-
-        return $country_name;
+        
+        return $result->fetch();
     }        
 }
 
