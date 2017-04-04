@@ -1,12 +1,12 @@
 <?php
 //Implement connection to database
-function db_connect($encoding='cp1251')
+function db_connect($encoding='utf8mb4')
 {
-    if(!mysql_connect("localhost", "ilya", "local")){
+    if(!mysql_connect("localhost", "root", "")){
         trigger_error("Connection to database failed, error: ".mysql_error(), E_USER_ERROR);
         exit();
     }
-    if(!mysql_select_db("patents")){
+    if(!mysql_select_db("patents.dev")){
         trigger_error("Changing database failed, error: ".mysql_error(), E_USER_ERROR);
         exit();
     }

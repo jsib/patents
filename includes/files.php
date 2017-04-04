@@ -1,4 +1,4 @@
-<?
+<?php
 //read from file specified by $filename and return data which was read
 function file_easy_read($file_name)
 {

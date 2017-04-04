@@ -1,4 +1,4 @@
-<?
+<?php
 //Генерирует хэш на основе логина и пароля
 function generate_hash($user, $password){
 	$hash=sha1(md5($user)."+++".$password);
@@ -17,7 +17,7 @@ function check_login(){
 
 //Генерирует HTML формы входа
 function login_form($message=''){
-	$html.="";
+	$html = "";
 	$html.=template_get('header');
 	$html.="<div style='width:100%;height:100%' align='center'>";
 	$html.="<form action='/?action=login' method='post' style='margin-top:25%;width:300px;height:300px;'>";

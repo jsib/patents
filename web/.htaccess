@@ -1,0 +1,16 @@
+#Replace index file
+DirectoryIndex app.php
+
+#Forbid unwanted translations like /app to app.php
+#But we need to translate /app to /app.php/app
+Options -MultiViews
+
+#Switch on rewrite engine
+RewriteEngine On
+
+#Process all existing files
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule .? - [L]
+
+#Guide all other queries
+RewriteRule .? %{ENV:BASE}/app.php [L]

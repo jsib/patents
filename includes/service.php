@@ -1,4 +1,4 @@
-<?
+<?php
 function show($text)	//Friendly shows some text given in different formats
 {
 	$sapi=php_sapi_name();

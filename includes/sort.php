@@ -1,4 +1,4 @@
-<?
+<?php
 //get value of sorting from browser
 function get_sort(){
     if(isset($_GET['sort'])){

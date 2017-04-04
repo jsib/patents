@@ -155,8 +155,8 @@ class Database
             //In case of error
             if ($bind_result === false) {
                 \error(
-                    "Cannot bind param to stmt object. Params array:".NS_D.
-                    "Stmt error number: ".$this->stmt->errno.NS_D.
+                    "Cannot bind param to stmt object. Params array:"."<br/>".
+                    "Stmt error number: ".$this->stmt->errno."<br/>".
                     "Stmt error text: ".$this->stmt->error
                 );
             }
@@ -173,8 +173,8 @@ class Database
         //In error case
         if ($result === false) {
             \error(
-                "Cannot execute stmt object. ".NS_D.
-                "Stmt error number: ".$this->stmt->errno.NS_D.
+                "Cannot execute stmt object. "."<br/>".
+                "Stmt error number: ".$this->stmt->errno."<br/>".
                 "Stmt error text: ".$this->stmt->error
             );
         }
@@ -198,8 +198,8 @@ class Database
         //Handle errors
         if ($this->stmt->errno !== 0) {
             error(
-                "Cannot get result of stmt object".NS_D.
-                "Stmt error number: ".$this->stmt->errno.NS_D.
+                "Cannot get result of stmt object"."<br/>".
+                "Stmt error number: ".$this->stmt->errno."<br/>".
                 "Stmt error text: ".$this->stmt->error
             );
         }

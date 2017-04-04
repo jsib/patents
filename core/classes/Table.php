@@ -1,45 +1,150 @@
 <?php
 
+namespace Core\Table;
+
+use Core\Database\Database;
+use Core\View\View;
+use Core\Auth\Auth;
+use Core\Request\Request;
+
 /**
  * Provide machinery for easy HTML tables creating
  */
 abstract class Table
 {
-    //Database object
+    /**
+     * Store database object here.
+     * We make injection of this object in __construct() method.
+     */
     protected $db;
     
-    public function __construct()
+    /**
+     * Store information about authentication
+     */
+    public $auth;
+    
+    /**
+     * Data, which we retrieve from database.
+     * See getData() method description for deeply understanding how we use it.
+     */
+    protected $data = [];
+    
+    /*
+     * Data from $data property, which was prepared with prepareData() method.
+     */
+    protected $matrix = [];
+    
+    /**
+     * Appearance of table. Contain info about style, onclick attributes, etc.
+     */
+    protected $appearance = [];
+    
+    /**
+     * Store links for table
+     */
+    protected $links = [];
+    
+    /**
+     * Single height for all rows in table
+     */
+    protected $rowHeight = '';
+    
+    /**
+     * Single border width for the whole table
+     */
+    protected $border;
+    
+    /**
+     * Columns headers (first row) data
+     */
+    protected $headers;
+
+    /**
+     * Columns properties
+     */
+    protected $columns;
+
+    
+    /**
+     * Sort table by this column
+     */
+    protected $sort;
+    
+    /**
+     * Sort direction for table sorting
+     */
+    protected $sortDirection;
+
+
+    final public function __construct()
     {
-        //Make injection of database object
-        $this->db = new Core\Database\Database();
+        //Make injections
+        $this->db = new Database();
+        $this->view = new View();
+        $this->auth = new Auth();
+        $this->request = new Request();
     }
 
     /**
-     * Collect information for table from database
+     * Retrieve data for table from database only
+     * and save it to $data property. Futher processing
+     * of this data we perform in prepareData() method.
      */
-    protected function getFromDb()
+    protected function getData()
     {
-        
+        trigger_error(
+            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
+            E_USER_ERROR
+        );
+    }
+    
+    /**
+     * Build table array which contains all the table information
+     * for building html from it. Should be overriden by inherited class.
+     */
+    protected function prepareData()
+    {
+        trigger_error(
+            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
+            E_USER_ERROR
+        );
     }
     
     /**
      * Declare headers for table
      */
-    protected function createHeader()
+    protected function setHeader()
     {
+        trigger_error(
+            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
+            E_USER_ERROR
+        );
     }
     
     /**
-     * Build table array which contains all the table information
-     * for building html from it.
+     * Set columns properties here, like type, etc.
      */
-    protected function createBody()
+    protected  function setColumns()
     {
-        
+        trigger_error(
+            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
+            E_USER_ERROR
+        );
     }
 
     /**
-     * Add information about the header to $headers property
+     * Set general properties, such as border width and single row height
+     */
+    protected  function setOtherProperties()
+    {
+        trigger_error(
+            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
+            E_USER_ERROR
+        );
+    }
+    
+    /**
+     * Add information about the header to $headers property.
      */
     final protected function addHeaderColumn($column, $value)
     {
@@ -47,24 +152,179 @@ abstract class Table
     }
     
     /**
-     * Combine results of all methods and return final table's html
+     * Add information about column type to $columns property.
      */
-    final public function create()
+    final protected function setColumnType($column, $type)
     {
-        //Задаем первую строку таблицы
-        $table['row_first']=$table_matrix[0];
+        $this->columns[$column]['type'] = $type;
+    }
+
+    /**
+     * Get column type
+     */
+    final public function getColumnType($column)
+    {   
+        if ( !isset($this->columns[$column]['type']) ) {
+            return '';
+        }
         
-        //Задаем матрицу таблицы
-        unset($table_matrix[0]);
-        $table['matrix']=$table_matrix;
-        
+        return $this->columns[$column]['type'];
     }
     
     /**
-     * Define columns properties, like type, etc.
+     * Add information about column width to $columns property.
      */
-    protected  function setColumnsExtraProperties()
+    final protected function setColumnWidth($column, $width)
     {
+        $this->columns[$column]['width'] = $width;
     }
+    
+    /**
+     * Get column width
+     */
+    final public function getColumnWidth($column)
+    {   
+        if ( !isset($this->columns[$column]['width']) ) {
+            return '';
+        }
+        
+        return $this->columns[$column]['width'];
+    }
+
+    /**
+     * Add information about column width to $columns property.
+     * Be patient, that input width expand width of columns
+     */
+    final protected function setColumnInputWidth($column, $width)
+    {
+        $this->columns[$column]['input-width'] = $width;
+    }
+    
+    /**
+     * Get column input width
+     */
+    final public function getColumnInputWidth($column)
+    {   
+        if ( !isset($this->columns[$column]['input-width']) ) {
+            return '';
+        }
+        
+        return $this->columns[$column]['input-width'];
+    }
+    
+    /**
+     * Set single height for all rows
+     */
+    final protected function setRowHeight($height)
+    {
+        $this->rowHeight = $height;
+    }
+    
+     /**
+     * Get cell appearance
+     */
+    final public function getCellAppearance($row, $column)
+    {   
+        if ( !isset($this->matrix[$row][$column]) ) {
+            return '';
+        }
+        
+        return $this->matrix[$row][$column];
+    }
+   
+    
+    /**
+     * Set table's border width
+     * 
+     * @border int Width of border in pixels
+     */
+    final protected function setBorderWidth($border)
+    {
+        $this->border = $border;
+    }
+
+    /**
+     * Produce html for column header, including functionality for sorting
+     */
+    final public function buildColumnHeader(
+        $column_name,
+        $column_name_rus,
+        $sort_column,
+        $sort_direction
+    ){
+        //Get new sort dirction and new opposite sort direction
+        if($sort_column == $column_name){
+            if($sort_direction == "asc"){
+                $sort_direction_new = "desc";
+                $sort_direction_opposite_new = "asc";
+            }else{
+                $sort_direction_new = "asc";
+                $sort_direction_opposite_new = "desc";
+            }
+        }else{
+            $sort_direction_new = "asc";
+            $sort_direction_opposite_new = "asc";
+        }
+
+        //Change 'sort' argument in uri
+        $uri = uri_make('sort', $column_name);
+
+        //Change 'sort_direction' argument in uri
+        $uri = uri_change('sort_direction', $sort_direction_new, $uri);
+
+        //Build html links for sorting
+        $hrefs = "<a href='" . $uri . "' class='sort'>" . $column_name_rus . "</a>";
+
+        //Build additional links with arrow icon
+        if($sort_column == $column_name){
+            $hrefs .= "
+                <a href='" . $uri . "'>
+                    <img src='/_content/img/".$sort_direction_opposite_new.".png' 
+                        style='margin:0 0 0 3px;'/>
+                </a>";
+        }
+
+        return $hrefs;
+    }
+
+    /**
+     * Build ready for use table's html
+     */
+    final public function build(){
+        $this->getData();
+        $this->setHeader();
+        $this->setColumns();
+        $this->prepareData();
+        $this->setOtherProperties();
+        
+        //Configure sorting parameters
+//        if(!$sort=get_sort()) $sort=$table['sort_default'];
+//        if(!$sort_direction=get_sort_direction()) $sort_direction=$table['sort_direction_default'];
+//        $table['sort']=$sort;
+//        $table['sort_direction']=$sort_direction;
+        
+        //Sort table
+//        table_matrix_sort($table['matrix'], $sort, $sort_direction, $table['sort_specific']);
+        
+        if( $this->auth->getRight('edit') ){
+		$form_action = uri_make('action', 'save_patent');
+	}else{
+		$form_action = uri_make();
+	}
+
+        
+        return $this->view->load('table', [
+            'headers' => $this->headers,
+            'columns' => $this->columns,
+            'matrix' => $this->matrix,
+            'appearance' => $this->appearance,
+            'links' => $this->links,
+            'border' => $this->border,
+            'sort' => $this->sort,
+            'sort_direction' => $this->sortDirection,
+            'form_action' => $form_action,
+            'table' => $this,
+        ]);
+    }    
 }
 

@@ -1,4 +1,5 @@
 <?php
+
 require_once($_SERVER['DOCUMENT_ROOT']."/includes/uris.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/includes/templates.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/includes/files.php");

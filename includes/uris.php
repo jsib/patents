@@ -1,4 +1,4 @@
-<?
+<?php
 //поиск в $uri аргумента с именем $argument_name
 function uri_find_argument($argument_name, $uri){
     if(preg_match("/\?$argument_name\=/", $uri) || preg_match("/\&$argument_name\=/", $uri)){
@@ -55,17 +55,17 @@ function uri_make($argument_name=false, $argument_value=""){
 	}
 }
 
-function get_class_depend_on_uri($rule, $argument, $value){
+function get_class_depend_on_uri($rule, $argument, $value) {
     switch($rule){
         case "=":
-            if(trim(@$_GET[$argument])==$value){
+            if(trim($argument) == $value){
                 return "not-lighted";
             }else{
                 return "";
             }
         break;
         case "!=":
-            if(trim(@$_GET[$argument])!=$value){
+            if(trim($argument) != $value){
                 return "not-lighted";
             }else{
                 return "";
