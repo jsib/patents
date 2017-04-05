@@ -55,22 +55,4 @@ function uri_make($argument_name=false, $argument_value=""){
 	}
 }
 
-function get_class_depend_on_uri($rule, $argument, $value) {
-    switch($rule){
-        case "=":
-            if(trim($argument) == $value){
-                return "not-lighted";
-            }else{
-                return "";
-            }
-        break;
-        case "!=":
-            if(trim($argument) != $value){
-                return "not-lighted";
-            }else{
-                return "";
-            }
-        break;
-    }
-}
 ?>

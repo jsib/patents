@@ -8,29 +8,26 @@ class Autoloader
     /**
      * Autoload necessary class
      * 
-     * @param type $class
-     * @return boolean
+     * @param type $path_str
+     * @return void
      */
-    public static function init($class)
+    public static function load($path_str)
     {
         //Split path to pieces
-        $parts = explode('\\', $class);
+        $path = explode('\\', $path_str);
         
-        //Entities
-        if ( count($parts) == 2 && $parts[0] == 'Entities') {
-            require_once ROOT_PATH . 'app/' . $parts[0] . '/' . $parts[1] . '.php';
-            return true;
+        //Class file in CLASSES_PATH folder
+        if( $path[0] == 'Core') {
+            $path_ready = CLASSES_PATH . $path[1];
         }
         
-        //For classes, which files are in subfolder
-        if (isset($parts[1]) && $parts[1] == 'Tables' && isset($parts[2])) {
-            require_once CORE_CLASSES_PATH . $parts[1] . '/' . $parts[2] . '.php';
-        //Classes files placed directly in main class folder
-        } elseif (count($parts) == 1) {
-            require_once CORE_CLASSES_PATH . $parts[0] . '.php';
-        } else {
-            require_once CORE_CLASSES_PATH . $parts[1] . '.php';
+        //App file in APP_PATH dir
+        if( $path[0] == 'App') {
+            $path_app_str = 
+            $path_ready = APP_PATH . $path[1]  . '/' . $path[2];
         }
-    }
+        
+        require_once $path_ready . '.php';
+     }
 }
 

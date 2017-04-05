@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Date;
+namespace Core;
 /**
  * Provide functions to format dates
  */

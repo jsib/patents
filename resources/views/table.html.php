@@ -71,7 +71,8 @@
     <div id='menu_top'>
         <div id='menu_top_left_part'>
             <?php $topmenu_item_iteration = 1 ?>
-            <?php $topmenu_items = (new Entities\TopMenu($this->table->country))->getList() ?>
+            <?php $topmenu_items = (new App\Entity\TopMenu($this->table->country))->getList() ?>
+            <?php //show($topmenu_items) ?>
             <?php if ( count($topmenu_items) > 0): ?>
                 <?php foreach ($topmenu_items as $item): ?>
                     <a href='<?php echo $item['href'] ?>' class='<?php echo $item['class'] ?>'><?php echo $item['name_rus'] ?></a>

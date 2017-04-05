@@ -1,8 +1,8 @@
 <?php
 
-namespace Core\Route;
+namespace Core;
 
-use Core\Uri\Uri;
+use Core\Uri;
 
 /* 
  * Provide methods for organizing routing

@@ -18,10 +18,13 @@ const ROOT_PATH = 'C:\WebServers\home\patents.dev\www\\';
 const CORE_PATH = ROOT_PATH . 'core/';
 
 //Path to core classes for autoloader
-const CORE_CLASSES_PATH = ROOT_PATH . 'core/classes/';
+const CLASSES_PATH = ROOT_PATH . 'core/classes/';
+
+//Path to root application dir
+const APP_PATH = ROOT_PATH . 'app/';
 
 //Path to controllers
-const CONTROLLERS_PATH = ROOT_PATH . 'app/Controllers/';
+const CONTROLLERS_PATH = APP_PATH . 'Controller/';
 
 //Encoding of .php, .html, etc source files
 const FILES_ENCODING = 'UTF-8';

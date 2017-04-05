@@ -3,9 +3,9 @@
 /**
  * Shortcut for Debug::dump() method
  */
-function dump()
+function dump(...$args)
 {
-    return call_user_func_array(array('Debug', 'dump'), func_get_args());
+    return Debug::dump($args);
 }
 
 /**

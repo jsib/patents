@@ -1,6 +1,6 @@
 <?php
 
-use Core\Route\Route;
+use Core\Route;
 
 //Include main config file
 require_once('../app/config.php');
@@ -15,7 +15,7 @@ require_once(ROOT_PATH . "includes/sort.php");
 require_once(CORE_PATH . "shortcuts.php");
 
 //Require debug before autoloader to handle autoloader errors correctly
-require_once(CORE_CLASSES_PATH . "Debug.php");
+require_once(CLASSES_PATH . "Debug.php");
 
 //Set error handler
 set_error_handler(array('Debug', 'handleErrors'));
@@ -25,10 +25,10 @@ session_start();
 session_set_cookie_params(10800);
 
 //Require autoloader class
-require_once(CORE_CLASSES_PATH."Autoloader.php");
+require_once(CLASSES_PATH."Autoloader.php");
 
 //Set classes autoloader
-spl_autoload_register('Autoloader::init');
+spl_autoload_register('Autoloader::load');
 
 //Create instance of route object
 $route = new Route();

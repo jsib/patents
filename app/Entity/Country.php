@@ -1,8 +1,8 @@
 <?php
 
-namespace Entities;
+namespace App\Entity;
 
-use Core\Database\Database;
+use Core\Database;
 
 class Country
 {

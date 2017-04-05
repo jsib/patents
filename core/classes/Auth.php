@@ -1,10 +1,6 @@
 <?php
 
-namespace Core\Auth;
-
-use Core\Facades\Uri;
-use Core\Facades\Route;
-use Core\Facades\DB;
+namespace Core;
 
 /* 
  * Provide authentication methods

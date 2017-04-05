@@ -1,17 +1,19 @@
 <?php
 
-namespace Core\Table;
+namespace Core;
 
-use Core\Database\Database;
-use Core\View\View;
-use Core\Auth\Auth;
-use Core\Request\Request;
+use Core\Database;
+use Core\View;
+use Core\Auth;
+use Core\Request;
 
 /**
  * Provide machinery for easy HTML tables creating
  */
 abstract class Table
 {
+    use TableDefinition;
+    
     /**
      * Store database object here.
      * We make injection of this object in __construct() method.
@@ -85,63 +87,7 @@ abstract class Table
         $this->request = new Request();
     }
 
-    /**
-     * Retrieve data for table from database only
-     * and save it to $data property. Futher processing
-     * of this data we perform in prepareData() method.
-     */
-    protected function getData()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
-            E_USER_ERROR
-        );
-    }
-    
-    /**
-     * Build table array which contains all the table information
-     * for building html from it. Should be overriden by inherited class.
-     */
-    protected function prepareData()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
-            E_USER_ERROR
-        );
-    }
-    
-    /**
-     * Declare headers for table
-     */
-    protected function setHeader()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
-            E_USER_ERROR
-        );
-    }
-    
-    /**
-     * Set columns properties here, like type, etc.
-     */
-    protected  function setColumns()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
-            E_USER_ERROR
-        );
-    }
 
-    /**
-     * Set general properties, such as border width and single row height
-     */
-    protected  function setOtherProperties()
-    {
-        trigger_error(
-            'Method ' . __METHOD__ . 'should be overriden in inherited class.',
-            E_USER_ERROR
-        );
-    }
     
     /**
      * Add information about the header to $headers property.

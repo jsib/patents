@@ -1,7 +1,7 @@
 <?php
 
-use Core\Controller\Controller;
-use Core\Tables\PatentsTable;
+use Core\Controller;
+use App\Table\PatentTable;
 
 class MainController extends Controller
 {
@@ -12,7 +12,7 @@ class MainController extends Controller
     
     public function listAction($country, $object)
     {
-        $table = new PatentsTable();
+        $table = new PatentTable();
         $table->country = $country;
         return $table->build();
     }

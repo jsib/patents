@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Uri;
+namespace Core;
 
 /* 
  * Realize methods for working with URIs: parse, etc

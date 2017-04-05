@@ -1,12 +1,12 @@
 <?php
 
-namespace Core\Tables;
+namespace App\Table;
 
-use Core\Table\Table;
-use Core\Date\Date;
-use Entities\Country;
+use Core\Table;
+use Core\Date;
+use App\Entity\Country;
 
-class PatentsTable extends Table
+class PatentTable extends Table
 {   
     /**
      * Table's country name
@@ -135,13 +135,10 @@ class PatentsTable extends Table
     {
         $this->setRowHeight('28px');
         $this->setBorderWidth(1);
-        //Задаем сортировку по умолчанию
-//        $table['sort_default']='id';
-
-        //Задаем направление сортировки по умолчанию
-//        $table['sort_direction_default']='asc';
-        $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
+        //$this->setDefaultSort('id');
+        //$this->setDefaultSortDirection('asc');
         
+        $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
     }
 }
 

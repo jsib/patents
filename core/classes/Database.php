@@ -1,6 +1,6 @@
 <?php
 
-namespace Core\Database;
+namespace Core;
 
 /* 
  * Realize methods for working with MySQL database via mysqli extension

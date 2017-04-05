@@ -1,12 +1,14 @@
 <?php
 
-namespace Entities;
+namespace App\Entity;
 
-use Core\Database\Database;
+use Core\Database;
 
 class TopMenu
 {
+    //Store current opened country
     protected $country;
+    
     /**
      * Store database object
      */
@@ -15,6 +17,9 @@ class TopMenu
     public function __construct($country)
     {
         $this->db = new Database();
+        
+        //Get current opened country
+        $this->country = $country;
     }
     
     /**
@@ -46,10 +51,33 @@ class TopMenu
         
         //Loop over menu items
         foreach( $items as $id => $item ) {
-            $items[$id]['class'] = get_class_depend_on_uri( "=", $this->country, $item['name'] );
+            //Set class and hyperlink for item
+            $items[$id]['class'] = $this->getHrefClass( "=", $item['name'] );
             $items[$id]['href'] = '/'.$item['name'].'/patents/';
         }
 
         return $items;
     }
+    
+    /**
+     * Return class for country hyperlink
+     */
+    protected function getHrefClass($rule, $value) {
+        switch($rule){
+            case "=":
+                if(trim($this->country) == $value){
+                    return "not-lighted";
+                }else{
+                    return "";
+                }
+            break;
+            case "!=":
+                if(trim($this->country) != $value){
+                    return "not-lighted";
+                }else{
+                    return "";
+                }
+            break;
+        }
+    }    
 }
