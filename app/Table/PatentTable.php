@@ -124,6 +124,7 @@ class PatentTable extends Table
         
         //Set columns input fields width
         $this->setColumnInputWidth('name', '260px');
+        $this->setColumnInputWidth('comment', '260px');
         $this->setColumnInputWidth('certificate', '150px');
         $this->setColumnInputWidth('request', '150px');
         $this->setColumnInputWidth('priority', '150px');
@@ -133,10 +134,10 @@ class PatentTable extends Table
     
     protected function setOtherProperties()
     {
-        $this->setRowHeight('28px');
+        $this->setRowHeight(28);
         $this->setBorderWidth(1);
-        //$this->setDefaultSort('id');
-        //$this->setDefaultSortDirection('asc');
+        $this->setDefaultSortColumn('id');
+        $this->setDefaultSortDirection('asc');
         
         $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
     }

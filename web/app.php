@@ -9,7 +9,6 @@ require_once(ROOT_PATH . "includes/service.php");
 require_once(ROOT_PATH . "includes/uris.php");
 require_once(ROOT_PATH . "includes/files.php");
 require_once(ROOT_PATH . "includes/auth.php");
-require_once(ROOT_PATH . "includes/sort.php");
 
 //Require shortcuts for classes functions
 require_once(CORE_PATH . "shortcuts.php");
@@ -50,17 +49,6 @@ if(!isset($_SESSION['user'])){
 	exit;
 }
 
-//Открываем область с данными
-//$html.="<div id='data_area'>";
-
-//Параметры сортировки
-//if(!$sort=get_sort()) $sort=$table['sort_default'];
-//if(!$sort_direction=get_sort_direction()) $sort_direction=$table['sort_direction_default'];
-//$table['sort']=$sort;
-//$table['sort_direction']=$sort_direction;
-
-//Сортировка
-//table_matrix_sort($table['matrix'], $sort, $sort_direction, $table['sort_specific']);
 
 //Выводим ссылку для добавления патента
 //Добавить строку/столбец

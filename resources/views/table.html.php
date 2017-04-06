@@ -5,13 +5,12 @@
         style='border:<?php echo $this->border + 1 ?>px solid #09F;'>
 
         <!-- Table Header -->
-        <tr>
             <?php foreach($this->headers as $column => $column_rus): ?>
                 <?php if( $this->table->getColumnType($column) == 'hidden'): ?>
                     <?php continue; ?>
                 <?php endif; ?>
 
-                <th style='width:<?php echo $this->table->getColumnWidth($column) ?>'>
+                <th style='width:<?php echo $this->table->getColumnWidth($column) ?>;height:<?php echo $this->rowHeight ?>px;'>
                     <?php echo $this->table->buildColumnHeader($column, $column_rus, $this->sortColumn, $this->sortDirection) ?>
                 </th>
             <?php endforeach; ?>
@@ -27,7 +26,7 @@
                     <?php if ($this->table->getColumnType($column) == 'hidden'): ?>
                         <?php continue; ?>
                     <?php endif; ?>
-                    <td style='<?php echo $this->table->getCellAppearance($row, $column) ?>;height: <?php echo $this->rowHeight ?>;padding-left:8px;'>
+                    <td style='<?php echo $this->table->getCellAppearance($row, $column) ?>;height:<?php echo $this->rowHeight ?>px;padding-left:8px;'>
                         <!-- No edit rights -->
                         <?php if( !$this->table->auth->getRight('edit') || isset($this->links[$row][$column])): ?>
                             <!-- Text with hyperlink -->

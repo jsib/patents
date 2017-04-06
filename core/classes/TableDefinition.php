@@ -3,10 +3,12 @@
 namespace Core;
 
 /**
- * Realize methods which should be overwritten by class inherited of Table class
+ * Inside this trait's methods we define table parameters.
+ * Also all of these methods should be overwritten by inheritor class.
  */
 trait TableDefinition
 {
+    
     /**
      * Retrieve data for table from database only
      * and save it to $data property. Futher processing
