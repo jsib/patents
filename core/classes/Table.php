@@ -45,7 +45,7 @@ abstract class Table
         //Make injections
         $this->db = new Database();
         $this->view = new View();
-        $this->auth = new Auth();
+        $this->auth = $GLOBALS['auth'];
         $this->request = new Request();
     }
 
@@ -127,7 +127,7 @@ abstract class Table
         //Sort table's dataa
         $this->sortData();
         
-        if( $this->auth->getRight('edit') ){
+        if( $this->auth->userHasRight('edit') ){
 		$form_action = uri_make('action', 'save_patent');
 	}else{
 		$form_action = uri_make();
@@ -136,6 +136,7 @@ abstract class Table
         
         return $this->view->load('table', [
             'headers' => $this->headers,
+            'rowHeight' => $this->rowHeight,
             'columns' => $this->columns,
             'matrix' => $this->matrix,
             'appearance' => $this->appearance,

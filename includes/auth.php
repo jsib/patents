@@ -32,11 +32,4 @@ function login_form($message=''){
 	return $html;
 }
 
-//Получает имя группы по имени пользователя
-function get_user_group($name){
-	$group='';
-	$user=db_easy("SELECT `group` FROM `users` WHERE `name`='$name'");
-	$group=$user['group'];
-	return $group;
-}
 ?>

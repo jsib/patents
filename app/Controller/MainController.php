@@ -25,12 +25,32 @@ class MainController extends Controller
 	}
     }
     
-    public function addAction()
+    public function addAction($country, $object)
     {
-        if(get_user_group($_SESSION['user'])=="writer"){
-            db_query("INSERT INTO `patents` SET `country_name`='".get_country()."'");
-            header("location: ".uri_make('action', ''));
+        //Check if user has rights for this action
+        if( !$this->auth->userHasRight('edit') ) {
+            error("You don't have permissions");
+            return;
         }
+        
+        //Check user input
+        if ( $object !== 'patent' && $object !== 'trademark' ) {
+            error("Error");
+            return;
+        }
+        
+        //Query database
+        $this->db->prepare("
+            INSERT INTO
+                `" . $object. "s`
+            SET
+                `country_name`=?
+        ")
+            ->bindParam('s', $country)
+            ->exec();
+        
+        //Redirect to list of items
+        header('Location: ' . '/' . $country . '/' . $object . '/');
     }
     
     //Сохранение таблицы. Выполняется до include_table().

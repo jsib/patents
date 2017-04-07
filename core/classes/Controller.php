@@ -7,13 +7,16 @@ use Core\View;
 class Controller
 {
     /**
-     * Helper for view object instance
+     * @var object $view Access to view object
+     * @var object $db Access to database object
      */
-    public $view;
+    public $view, $db;
     
     function __construct()
     {
         $this->view = new View();
+        $this->db = new Database();
+        $this->auth = $GLOBALS['auth'];
     }
     
     /**

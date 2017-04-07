@@ -27,6 +27,11 @@ class Autoloader
             $path_ready = APP_PATH . $path[1]  . '/' . $path[2];
         }
         
+        //Autoloader didn't find path
+        if (!isset($path_ready) ) {
+            error("Autoloader didn't find path for ".$path_str);
+        }
+        
         require_once $path_ready . '.php';
      }
 }

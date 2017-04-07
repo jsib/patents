@@ -17,17 +17,12 @@
             <br/><h1 style='font-size:24pt;'>Товарные знаки и патенты (<?php echo $this->table->country_rus ?>)</h1><br/>
             
             <div id='data_area'>
-                <form id='Form' action='<?php echo $this->form_action ?>' method='post' style='margin:0;padding:0;'>
-                    <?php $this->output('body') ?>
-                    <?php if( $this->table->auth->getRight('edit') ): ?>
-                        <br/><br/><input type='submit' value='Сохранить'></form>
-                    <?php endif; ?>
-                </form>
+                <?php $this->output('body') ?>
             </div>
             <div id='manage_menu'>
-                <?php if( $this->table->auth->getRight('edit') ): ?>
+                <?php if( $this->table->auth->userHasRight('edit') ): ?>
                     <h3 style='margin-top:30px;'>Действия</h3>
-                    <a href='/<?php echo $this->country ?>/patent/add'>Добавить патент</a>
+                    <a href='/<?php echo $this->table->country ?>/patent/add'>Добавить патент</a>
                     <br/><br/>
                 <?php endif; ?>
             </div>

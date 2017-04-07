@@ -56,7 +56,7 @@ class PatentTable extends Table
         
         foreach ($matrix as $id => $patent) {
             //Add column for delete action links
-            if( $this->auth->getRight('delete') ){
+            if( $this->auth->userHasRight('edit') ){
                 $matrix[$id]['delete'] = "Удалить";
 
                 $this->links[$id]['delete']['href'] =
@@ -68,6 +68,7 @@ class PatentTable extends Table
             } else {
                 $this->appearance[$id]['delete']['style'] = '';
                 $this->appearance[$id]['delete']['onclick'] = '';
+                $this->links[$id]['delete']['href'] = '';
             }
 
             //Clean empty dates
@@ -99,7 +100,7 @@ class PatentTable extends Table
         $this->addHeaderColumn('expire', 'Срок действия, до');
         
         //Column for 'Delete' action available depends on user rights
-        if ( $this->auth->getRight('delete') ) {
+        if ( $this->auth->userHasRight('edit') ) {
             $this->addHeaderColumn('delete', '');
         }
     }
@@ -114,7 +115,10 @@ class PatentTable extends Table
         $this->setColumnWidth('registration', '150px');
         $this->setColumnWidth('expire', '150px');
         $this->setColumnWidth('paid_before', '150px');
-        $this->setColumnWidth('delete', '70px');
+        //Column for 'Delete' action available depends on user rights
+        if ( $this->auth->userHasRight('edit') ) {
+            $this->setColumnWidth('delete', '70px');
+        }
 
         //Set columns type
         $this->setColumnType('id', 'hidden');
@@ -134,7 +138,7 @@ class PatentTable extends Table
     
     protected function setOtherProperties()
     {
-        $this->setRowHeight(28);
+        $this->setRowHeight(20);
         $this->setBorderWidth(1);
         $this->setDefaultSortColumn('id');
         $this->setDefaultSortDirection('asc');

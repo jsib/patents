@@ -9,9 +9,9 @@ input{border:1px solid #666;margin-top:5px;}
 input.radio{margin-top:5px;padding:0;}
 a, a:hover, a:link, a:visited{color:#000;dext-decoration:underline;}
 a:hover{dext-decoration:none;}
-/*зачистка float'ов*/
+/*Р·Р°С‡РёСЃС‚РєР° float'РѕРІ*/
 	.clr{clear:both;}
-/*Верхнее меню*/
+/*Р’РµСЂС…РЅРµРµ РјРµРЅСЋ*/
     #menu_top{}
     #menu_top_left_part{float:left;}
     #menu_top_middle_part{float:left;padding-left:100px;}
@@ -19,14 +19,14 @@ a:hover{dext-decoration:none;}
     #menu_top a{font-size:11pt;line-height:15pt;}
 	#menu_top .divider{padding-left:40px;}
     #menu_top_right_part{float:right;padding-right:20px;text-align:right;}
-/*Активные и неактивные ссылки*/
+/*РђРєС‚РёРІРЅС‹Рµ Рё РЅРµР°РєС‚РёРІРЅС‹Рµ СЃСЃС‹Р»РєРё*/
 a.not-lighted, a.not-lighted:hover, a.not-lighted:link, a.not-lighted:visited{color:#000;text-decoration:none;}
 a.filter-lighted, a.filter-lighted:hover, a.filter-lighted:link, a.filter-lighted:visited{color:#000;text-decoration:none;font-weight:bold;}
-/*контейнер всей страницы*/
+/*РєРѕРЅС‚РµР№РЅРµСЂ РІСЃРµР№ СЃС‚СЂР°РЅРёС†С‹*/
 	#main_area{padding:10px;}
-/*левая колонка всей страницы*/
+/*Р»РµРІР°СЏ РєРѕР»РѕРЅРєР° РІСЃРµР№ СЃС‚СЂР°РЅРёС†С‹*/
 	#left_scrap{float:left;width:800px;}
-/*правая колонка всей страницы*/
+/*РїСЂР°РІР°СЏ РєРѕР»РѕРЅРєР° РІСЃРµР№ СЃС‚СЂР°РЅРёС†С‹*/
 	#right_scrap{float:left;}
 #navigat_area{float:left;margin:150px 0 0 150px;padding:10px;border:1px solid #666;}
 td{padding:1px 5px;margin:0;}
@@ -42,7 +42,7 @@ a.sort{font-weight:bold;text-decoration:none;}
 #giveComp_mess{padding-right:10px;}
 #data_area{float:left;}
 #manage_menu{float:left;margin:0;padding:50px 0 20px 60px;font-size:11pt;}
-/*таблицы с данными*/
+/*С‚Р°Р±Р»РёС†С‹ СЃ РґР°РЅРЅС‹РјРё*/
 	table.data{margin:5px 0;font-family:Tahoma;font-size:10pt;}
 div#action_area{margin:23px 0 10px 0;}
 #action_button{margin-left:5px;height:22px;font-size:10pt;background:#f4cc60;border:1px solid #f4b303;color:#000;} 
@@ -58,10 +58,10 @@ div#action_area{margin:23px 0 10px 0;}
 .hl_key{font-weight:bold;color:orange;font-style:normal;}
 a.backlink, a.backlink:hover, a.backlink:visited, a.backlink:link{font-size:14pt;color:#666;text-decoration:none;}
 a.backlink:hover{text-decoration:underline;}
-/*только форма входа*/
+/*С‚РѕР»СЊРєРѕ С„РѕСЂРјР° РІС…РѕРґР°*/
 	#login_conteiner{margin:20% auto auto auto;padding:20px;width:300px;font-size:16pt;}
 	#login_message{padding:0 0 10px 0;color:red;font-size:12pt;}
 	table.login{padding:10px;border:2px solid #09F;font-family:Tahoma;}
-/*неподчеркнутые ссылки*/
+/*РЅРµРїРѕРґС‡РµСЂРєРЅСѓС‚С‹Рµ СЃСЃС‹Р»РєРё*/
 a.no_underlined, a.no_underlined:visited, a.no_underlined:link{text-decoration:none;}
 a.no_underlined:hover{text-decoration:underline;}

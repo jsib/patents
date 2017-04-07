@@ -2,25 +2,31 @@
 
 namespace Core;
 
+use Core\Database;
+
 /* 
  * Provide authentication methods
  */
 class Auth
 {
     /**
-     * Routes, which can be visited anonymously, e.g. without sign in
+     * @var array $anonymousRoutes Define routes, which can be visited anonymously
+     * @var string $signInCheckRoute Leads to sign in form check, it's always anonymous
+     * @var object $db Acess to database methods
+     * @var object $route Access to route object
      */
-    private $anonymousRoutes = [];
+    private $anonymousRoutes, $signInCheckRoute, $db, $route;
     
     /**
-     * Route leads to sign in form, should be anonymous always
+     * @var string $signInRoute Leads to sign in form, this route is always anonymous
      */
-    private $signInRoute = '';
+    public $signInRoute;
     
-    /**
-     * Route leads to sign in form check, should be anonymous always
-     */
-    private $signInCheckRoute ='';
+    public function __construct($route)
+    {
+        $this->db = new Database();
+        $this->route = $route;
+    }
     
     /*
      * Start cookie session and define is user authenticated
@@ -30,12 +36,15 @@ class Auth
         //Start cookie session
         session_start();
         
+        //Set session timelife
+        session_set_cookie_params(10800);
+        
         if ($this->signInRoute == '') {
-            \error("Sing in route is not defined. Define it in auth.php");
+            \error("Sign in route is not defined. Define it in auth.php");
         }
 
         if ($this->signInCheckRoute == '') {
-            \error("Sing in check route is not defined. Define it in auth.php");
+            \error("Sign in check route is not defined. Define it in auth.php");
         }
         
         if (!$this->hasSignIn() && !$this->isRouteAnonymous()) {
@@ -49,6 +58,20 @@ class Auth
     public function hasSignIn()
     {
         return isset($_SESSION['user']['name']);
+    }
+    
+    /**
+     * Get current signed in user name
+     * 
+     * @return mixed Signed in user name
+     */
+    public function getSignedInUserName()
+    {
+        if ( $this->hasSignIn() ) {
+            return $_SESSION['user']['name'];
+        } else {
+            return 'anonymous';
+        }
     }
     
     /**
@@ -67,7 +90,14 @@ class Auth
     public function isRouteAnonymous()
     {
         //Get route by client uri
-        $route_str = array_keys(Route::findRouteByClientUri())[0];
+        $route = $this->route->findRouteByClientUri();
+                
+        //Check if route found
+        if ($route === false) {
+            error("Route for current client uri is not found. Check route.php.");
+        }
+        
+        $route_str = array_keys($route)[0];
         
         //Is it in anonymous routes array?
         return isset($this->anonymousRoutes[$route_str]);
@@ -104,7 +134,7 @@ class Auth
     {
         $user_name = $_SESSION['user']['name'];
         
-        $result = DB::prepare("SELECT `id` FROM `users` WHERE `name`=?")
+        $result = $this->db->prepare("SELECT `id` FROM `users` WHERE `name`=?")
             ->bindParam('s', $user_name)
             ->exec()
             ->getResult();
@@ -119,9 +149,34 @@ class Auth
     /**
      * Check if user has right to perform action
      */
-    public function getRight($action)
+    public function userHasRight($right)
     {
+        //Get session user name
+        $user_name = $this->getSignedInUserName();
+        
+        //Query database
+	$result = $this->db->prepare("
+            SELECT
+                `right` 
+            FROM 
+                `users`
+            WHERE 
+                `name`=?
+        ")
+            ->bindParam('s', $user_name)
+            ->exec()
+            ->getResult();
+        
+        //No entry for this user in database, possibly it's anonymous user 
+        if ($result->numRows() == 0) {
+            return false;
+        }
+        
+        //User doesn't have needed rights
+        if ($result->fetch()['right'] != $right) {
+            return false;
+        }
+        
         return true;
     }
-    
 }

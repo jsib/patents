@@ -1,6 +1,7 @@
 <?php
 
 use Core\Route;
+use Core\Auth;
 
 //Include main config file
 require_once('../app/config.php');
@@ -19,10 +20,6 @@ require_once(CLASSES_PATH . "Debug.php");
 //Set error handler
 set_error_handler(array('Debug', 'handleErrors'));
 
-//Начинаем сессию и задаем ее время жизни
-session_start();
-session_set_cookie_params(10800);
-
 //Require autoloader class
 require_once(CLASSES_PATH."Autoloader.php");
 
@@ -33,12 +30,22 @@ spl_autoload_register('Autoloader::load');
 $route = new Route();
 
 //Include routes, must be after autoloader
-require_once(ROOT_PATH . 'app/routes.php');
+require_once(APP_PATH . 'routes.php');
 
+//Create instance of auth object
+$auth = new Auth($route);
+
+//Include auth rules including anonymous routes, etc
+require_once(APP_PATH . 'auth.php');
+
+//Build routes table
 $route->build();
 
+//Start session, etc
+$auth->init();
+
 //Start cookie session and define is user authenticated
-//Auth::init();
+
 
 echo $route->startController();
 exit;
