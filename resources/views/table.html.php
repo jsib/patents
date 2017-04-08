@@ -4,13 +4,12 @@
     <form id='Form' action='<?php echo $this->form_action ?>' method='post' style='margin:0;padding:0;'>
         <table cellspacing='0' cellpadding='1' border='<?php echo $this->border ?>' class='data' 
             style='border:<?php echo $this->border + 1 ?>px solid #09F;'>
-
+            <tr>
             <!-- Table Header -->
                 <?php foreach($this->headers as $column => $column_rus): ?>
                     <?php if( $this->table->getColumnType($column) == 'hidden'): ?>
                         <?php continue; ?>
                     <?php endif; ?>
-
                     <th style='width:<?php echo $this->table->getColumnWidth($column) ?>;height:<?php echo $this->rowHeight ?>px;'>
                         <?php echo $this->table->buildColumnHeader($column, $column_rus, $this->sortColumn, $this->sortDirection) ?>
                     </th>
@@ -23,9 +22,12 @@
                 <tr>
                     <?php foreach($this->columns as $column => $empty): ?>
                         <?php $value = $this->matrix[$row][$column] ?>
-                        <?php if ($this->table->getColumnType($column) == 'hidden'): ?>
-                            <?php continue; ?>
-                        <?php endif; ?>
+                            <?php if ($this->table->getColumnType($column) == 'hidden'): ?>
+                                <input type='hidden' 
+                                       name='Form[<?php echo $row ?>][<?php echo $column ?>]' 
+                                       value='<?php echo $value ?>'>
+                                <?php continue; ?>
+                            <?php endif; ?>
                         <td style='<?php echo $this->table->getCellAppearance($row, $column) ?>;height:<?php echo $this->rowHeight ?>px;padding-left:8px;'>
                             <!-- No edit rights -->
                             <?php if( !$this->table->auth->userHasRight('edit') || isset($this->links[$row][$column])): ?>
@@ -45,11 +47,7 @@
                             <!-- //No edit rights -->
                             <!-- Edit rights -->
                             <?php else: ?>
-                                <?php if ($this->table->getColumnType($column) == 'hidden'): ?>
-                                    <input type='hidden' 
-                                           name='Form[<?php echo $row ?>][<?php echo $column ?>]' 
-                                           value='<?php echo $value ?>'>
-                                <?php else: ?>
+                                <?php if ($this->table->getColumnType($column) != 'hidden'): ?>
                                     <input type='text' 
                                            name='Form[<?php echo $row ?>][<?php echo $column ?>]'
                                            value='<?php echo $value ?>'
@@ -94,6 +92,7 @@
         <div id='menu_top_right_part'>
             Логин: <?php echo $this->table->auth->getSignedInUserName() ?><span style='width:100px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="/sign_out/" class='logout'>Выйти</a>
         </div>
+        <div class='clear'></div>
     </div>
     <!-- //Top Menu -->
 <?php $this->stop('topmenu') ?>

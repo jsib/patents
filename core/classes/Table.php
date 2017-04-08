@@ -17,6 +17,12 @@ abstract class Table
     use TableSort;
     
     /**
+     * @var object $auth Store information about authentication
+     * @var string $formAction Action attribute of a form
+     */
+    public $auth, $formAction;
+    
+    /**
         @var object $db Store database object
         @var array $data Table data, which we retrieve from database
         @var array $matrix Table data, prepared to pass to sort
@@ -34,11 +40,6 @@ abstract class Table
     protected $db, $data, $matrix, $appearance, $links, $rowHeight,
         $border, $headers, $columns, $sortColumn, $sortDirection,
         $defaultSortColumn, $defaultSortDirection;
-    
-    /**
-     * @var object $auth Store information about authentication
-     */
-    public $auth;
     
     final public function __construct()
     {
@@ -127,13 +128,6 @@ abstract class Table
         //Sort table's dataa
         $this->sortData();
         
-        if( $this->auth->userHasRight('edit') ){
-		$form_action = uri_make('action', 'save_patent');
-	}else{
-		$form_action = uri_make();
-	}
-
-        
         return $this->view->load('table', [
             'headers' => $this->headers,
             'rowHeight' => $this->rowHeight,
@@ -144,7 +138,7 @@ abstract class Table
             'border' => $this->border,
             'sortColumn' => $this->sortColumn,
             'sortDirection' => $this->sortDirection,
-            'form_action' => $form_action,
+            'form_action' => $this->formAction,
             'table' => $this,
         ]);
     }    

@@ -59,8 +59,7 @@ class PatentTable extends Table
             if( $this->auth->userHasRight('edit') ){
                 $matrix[$id]['delete'] = "Удалить";
 
-                $this->links[$id]['delete']['href'] =
-                    uri_make( ['action' => 'delete_patent', 'id' => $id] );
+                $this->links[$id]['delete']['href'] = '/' . $this->country . '/patent/delete/' . $patent['id'];
 
                 $this->appearance[$id]['delete']['style'] = 'color:red;';
                 $this->appearance[$id]['delete']['onclick'] = 
@@ -143,7 +142,16 @@ class PatentTable extends Table
         $this->setDefaultSortColumn('id');
         $this->setDefaultSortDirection('asc');
         
+        //Set country name
         $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
+        
+        //Set form action
+        $this->formAction = '/' . $this->country . '/patent/';
+    }
+    
+    public function setCountry($country)
+    {
+        $this->country = $country;
     }
 }
 

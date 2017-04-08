@@ -2,8 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="content-type" content="text/html; charset=windows-1251" />
-        <title>Управление патентами</title>
+        <title>Патенты и торговые знаки</title>
         <?php $this->assetJS('js/jquery.js') ?>
+        <?php $this->assetCSS('vendor/bootstrap/dist/css/bootstrap.min.css') ?>
         <?php $this->assetCSS('css/calendar.css') ?>
         <?php $this->assetJS('js/calendar.js') ?>
         <?php $this->assetCSS('css/style.css') ?>
@@ -11,8 +12,6 @@
     <body>
         <div id="main_area">
             <?php $this->output('topmenu') ?>
-            
-            <div class='clr'></div>
             
             <br/><h1 style='font-size:24pt;'>Товарные знаки и патенты (<?php echo $this->table->country_rus ?>)</h1><br/>
             

@@ -12,17 +12,41 @@ class MainController extends Controller
     
     public function listAction($country, $object)
     {
+        //Save table, should be called before output table
+        $this->save($country, $object);
+        
+        //Build table
         $table = new PatentTable();
-        $table->country = $country;
+        $table->setCountry($country);
+        
+        //Return table html
         return $table->build();
     }
     
-    public function deleteAction()
+    public function deleteAction($country, $object, $id)
     {
-	if(get_user_group($_SESSION['user'])=="writer"){
-            db_query("DELETE FROM `patents` WHERE `id`=".@$_GET['id']);
-            header("location: ".uri_make('action', ''));
-	}
+        //Check if user has rights for this action
+        if( !$this->auth->userHasRight('edit') ) {
+            error("You don't have permissions");
+            return;
+        }
+
+        //Stop action on incorrect client input
+        $this->stopOnIncorrectObject($object);
+        echo('hello' . $id. $country . $object);
+                
+        //Query database
+        $this->db->prepare("
+            DELETE FROM
+                `" . $object . "s`
+            WHERE 
+                id=?
+        ")
+            ->bindParam('d', $id)
+            ->exec();
+        
+        //Redirect to list of items
+        header('Location: ' . '/' . $country . '/' . $object . '/');
     }
     
     public function addAction($country, $object)
@@ -33,16 +57,13 @@ class MainController extends Controller
             return;
         }
         
-        //Check user input
-        if ( $object !== 'patent' && $object !== 'trademark' ) {
-            error("Error");
-            return;
-        }
+        //Stop action on incorrect client input
+        $this->stopOnIncorrectObject($object);
         
         //Query database
         $this->db->prepare("
             INSERT INTO
-                `" . $object. "s`
+                `" . $object . "s`
             SET
                 `country_name`=?
         ")
@@ -53,60 +74,66 @@ class MainController extends Controller
         header('Location: ' . '/' . $country . '/' . $object . '/');
     }
     
-    //Сохранение таблицы. Выполняется до include_table().
-    public function save()
+    /**
+     * Save table data
+     */
+    private function save($country, $object)
     {
-	if(get_user_group($_SESSION['user'])=="writer"){	
-            $save_result=true;
-            //show($_POST['Form']);
-            if(isset($_POST['Form'])){
-                foreach($_POST['Form'] as $row=>$columns){
-                    //Добавление новых патентов
-                    if(trim(@$columns['id'])==""){
-                        if(db_query("INSERT INTO `patents` SET
-                                        `name`='{$columns['name']}',
-                                        `country_name`='".get_country()."',
-                                        `certificate`='".$columns['certificate']."',
-                                        `request`='".$columns['request']."',
-                                        `priority`='".date("Y-m-d", strtotime($columns['priority']))."',
-                                        `registration`='".date("Y-m-d", strtotime($columns['registration']))."',
-                                        `expire`='".date("Y-m-d", strtotime($columns['expire']))."'
-                        ")){
-                            if(db_result()){
-                                    //$html.="<span style='color:green'>Добавлен патент '{$columns['name']}'</span>";
-                            }else{
-                                    //$html.="<span style='color:red'>Ошибка при добавлении патента '{$columns['name']}'</span>";
-                            }
-                        }else{
-                            //$html.="<span style='color:red'>Ошибка при добавлении патента '{$columns['name']}'</span>";
-                        }
-                    //Сохранение уже имеющихся
-                    }else{
-                        if(!db_query("UPDATE `patents` SET
-                                        `name`='{$columns['name']}',
-                                        `comment`='{$columns['comment']}',
-                                        `country_name`='".get_country()."',
-                                        `certificate`='".$columns['certificate']."',
-                                        `request`='".$columns['request']."',
-                                        `priority`='".date("Y-m-d", strtotime($columns['priority']))."',
-                                        `registration`='".date("Y-m-d", strtotime($columns['registration']))."',
-                                        `paid_before`='".date("Y-m-d", strtotime($columns['paid_before']))."',
-                                        `expire`='".date("Y-m-d", strtotime($columns['expire']))."'
-                                    WHERE id={$columns['id']}
-                        ")){
-                            if(db_result()){
-                                    //$html.="<span style='color:green'>Таблица успешно сохранена '{$columns['name']}'</span>";
-                            }else{
-                                    //$html.="<span style='color:red'>Ошибка при сохранении таблицы '{$columns['name']}'</span>";
-                            }
-                        }else{
-                            //$html.="<span style='color:red'>Ошибка при сохранении таблицы '{$columns['name']}'</span>";
-                        }	
-                    }	
-                }
-                //$html.="<span style='color:green'>Таблица успешно сохранена '{$columns['name']}'</span>";
-            }
-	}
+        //Check if cliend wanted to save form
+        if ( !isset($_POST['Form']) ) {
+            //Do notning
+            return;
+        }
         
+        //Check if user has rights for this action
+        if( !$this->auth->userHasRight('edit') ) {
+            error("You don't have permissions");
+            return;
+        }
+        
+        //Stop action on incorrect client input
+        $this->stopOnIncorrectObject($object);
+        
+        //Loop over form rows and save them
+        foreach( $_POST['Form'] as $row => $columns ){
+            $this->db->prepare("
+                UPDATE
+                    `" . $object . "s`
+                SET
+                    `name`=?,
+                    `comment`=?,
+                    `country_name`=?,
+                    `certificate`=?,
+                    `request`=?,
+                    `priority`=?,
+                    `registration`=?,
+                    `paid_before`=?,
+                    `expire`=?
+                WHERE
+                    id=?
+            ")
+                ->bindParam('s', $columns['name'])
+                ->bindParam('s', $columns['comment'])
+                ->bindParam('s', $country)
+                ->bindParam('s', $columns['certificate'])
+                ->bindParam('s', $columns['request'])
+                ->bindParam('s', date("Y-m-d", strtotime($columns['priority'])))
+                ->bindParam('s', date("Y-m-d", strtotime($columns['registration'])))
+                ->bindParam('s', date("Y-m-d", strtotime($columns['paid_before'])))
+                ->bindParam('s', date("Y-m-d", strtotime($columns['expire'])))
+                ->bindParam('d', $columns['id'])                                    
+                ->exec();
+        }
+    }
+    
+    /**
+     * Stops action if object is incorrect
+     */
+    private function stopOnIncorrectObject($object)
+    {
+        if ( $object !== 'patent' && $object !== 'trademark' ) {
+            error("Error");
+            return;
+        }
     }
 }

@@ -7,6 +7,7 @@
 $route->add('/', 'Main:index');                     //Home page
 $route->add('/{country}/{object}/', 'Main:list');   //List countries
 $route->add('/{country}/{object}/add', 'Main:add'); //Add item
+$route->add('/{country}/{object}/delete/{id}', 'Main:delete'); //Delete item
 
 //Sign in, sign out, registration
 $route->add('/sign_in/', 'SignIn:form');

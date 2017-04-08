@@ -68,7 +68,7 @@ class TopMenu
                 if(trim($this->country) == $value){
                     return "not-lighted";
                 }else{
-                    return "";
+                    return "lighted";
                 }
             break;
             case "!=":

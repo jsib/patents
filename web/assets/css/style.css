@@ -1,67 +1,85 @@
-html{width:100%;height:100%;}
-body{width:100%;height:100%;padding:0;margin:0;font-family:Tahoma;font-size:10pt;}
-h3{font-size:11pt;font-family:Tahoma;margin:5px 0;padding:0;}
-p{margin:5px 0 10px;padding:5px 0;}
-p.screen-text{font-size:11pt;}
-img{border:0;margin:0;padding:0;}
-form{margin:0;padding:0}
-input{border:1px solid #666;margin-top:5px;}
-input.radio{margin-top:5px;padding:0;}
-a, a:hover, a:link, a:visited{color:#000;dext-decoration:underline;}
-a:hover{dext-decoration:none;}
-/*зачистка float'ов*/
-	.clr{clear:both;}
-/*Верхнее меню*/
-    #menu_top{}
-    #menu_top_left_part{float:left;}
-    #menu_top_middle_part{float:left;padding-left:100px;}
-	#menu_top p, p.menu_top_actions{margin:0;padding:3px 0;}
-    #menu_top a{font-size:11pt;line-height:15pt;}
-	#menu_top .divider{padding-left:40px;}
-    #menu_top_right_part{float:right;padding-right:20px;text-align:right;}
-/*Активные и неактивные ссылки*/
-a.not-lighted, a.not-lighted:hover, a.not-lighted:link, a.not-lighted:visited{color:#000;text-decoration:none;}
-a.filter-lighted, a.filter-lighted:hover, a.filter-lighted:link, a.filter-lighted:visited{color:#000;text-decoration:none;font-weight:bold;}
-/*контейнер всей страницы*/
-	#main_area{padding:10px;}
-/*левая колонка всей страницы*/
-	#left_scrap{float:left;width:800px;}
-/*правая колонка всей страницы*/
-	#right_scrap{float:left;}
-#navigat_area{float:left;margin:150px 0 0 150px;padding:10px;border:1px solid #666;}
-td{padding:1px 5px;margin:0;}
-td.top{border-top:2px solid #09F;}
-td.toptwo{border-top:1px solid #09F;}
-td.first{border-right:1px solid #09F;}
-td.first_{border-right:2px solid #09F;}
-h1{font-size:18pt;color:#A03;font-weight:normal;}
-h3.action{font-size:14pt;color:#A03;font-weight:normal;margin:0;padding:0 0 10px 0;}
-a.show_show, a.show_show:visited, a.show_show:hover{color:#000;text-decoration:none;font-weight:bold;}
-a.show_hide, a.show_hide:visited, a.show_hide:hover{color:#000;text-decoration:none;font-weight:normal;}
-a.sort{font-weight:bold;text-decoration:none;}
-#giveComp_mess{padding-right:10px;}
-#data_area{float:left;}
-#manage_menu{float:left;margin:0;padding:50px 0 20px 60px;font-size:11pt;}
-/*таблицы с данными*/
-	table.data{margin:5px 0;font-family:Tahoma;font-size:10pt;}
-div#action_area{margin:23px 0 10px 0;}
-#action_button{margin-left:5px;height:22px;font-size:10pt;background:#f4cc60;border:1px solid #f4b303;color:#000;} 
-.hl_comp{font-weight:bold;color:#007DFF;font-style:normal;}
-.hl_role{font-weight:bold;color:magenta;font-style:normal;}
-.hl_user{font-weight:bold;color:#FF4F00;font-style:normal;}
-.hl_comp2{font-weight:bold;color:#0047AB;font-style:normal;}
-.hl_user2{font-weight:bold;color:#991199;font-style:normal;}
-.hl_forbid{color:red;font-weight:bold;font-style:normal;}
-.hl_success{color:green;font-weight:bold;font-style:normal;}
-.hl_lic{font-weight:bold;color:orange;font-style:normal;}
-.hl_lic_type{font-weight:bold;color:orange;font-style:normal;}
-.hl_key{font-weight:bold;color:orange;font-style:normal;}
-a.backlink, a.backlink:hover, a.backlink:visited, a.backlink:link{font-size:14pt;color:#666;text-decoration:none;}
-a.backlink:hover{text-decoration:underline;}
-/*только форма входа*/
-	#login_conteiner{margin:20% auto auto auto;padding:20px;width:300px;font-size:16pt;}
-	#login_message{padding:0 0 10px 0;color:red;font-size:12pt;}
-	table.login{padding:10px;border:2px solid #09F;font-family:Tahoma;}
-/*неподчеркнутые ссылки*/
-a.no_underlined, a.no_underlined:visited, a.no_underlined:link{text-decoration:none;}
-a.no_underlined:hover{text-decoration:underline;}
+body {
+    font-family:Tahoma; font-size:10pt;
+}
+
+h1 {
+    font-size:18pt; color:#A03; font-weight:normal;
+}
+
+h3 {
+    font-size:11pt; margin:5px 0;
+}
+
+img {
+    border:0; margin:0; padding:0;
+}
+
+.clear {
+    clear:both;
+}
+
+a.lighted, a.not-lighted {
+    color:#000; text-decoration:none;
+}
+
+a.lighted {
+    text-decoration: underline;
+}
+
+a.sort {
+    color: #000;
+    font-weight:bold;
+    text-decoration:none;
+}
+
+table.data {
+    margin: 5px 0;
+    font-family: Tahoma;
+    font-size: 10pt;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    padding: 1px 5px;
+    margin:0;
+}
+
+input[type=submit] {
+    padding: 2px;
+}
+
+#main_area {
+    padding: 10px;
+}
+
+#data_area {
+    float:left; margin-bottom:40px;
+}
+
+#manage_menu {
+    float:left; margin:0; padding:50px 0 20px 60px; font-size:11pt;
+}
+
+#menu_top_left_part {
+    float:left;
+}
+
+#menu_top_middle_part {
+    float:left; padding-left:100px;
+}
+
+#menu_top a {
+    font-size:11pt; line-height:15pt;
+}
+
+#menu_top .divider {
+    padding-left:40px;
+}
+
+#menu_top_right_part {
+    float:right; padding-right:20px; text-align:right;
+}
+
