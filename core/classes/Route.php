@@ -35,7 +35,7 @@ class Route
     
     public function __construct()
     {
-        $this->uri = new Uri();
+        $this->uri = $GLOBALS['uri'];
     }
     
     /**

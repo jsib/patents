@@ -39,7 +39,7 @@ abstract class Table
      */
     protected $db, $data, $matrix, $appearance, $links, $rowHeight,
         $border, $headers, $columns, $sortColumn, $sortDirection,
-        $defaultSortColumn, $defaultSortDirection;
+        $defaultSortColumn, $defaultSortDirection, $uri;
     
     final public function __construct()
     {
@@ -48,6 +48,7 @@ abstract class Table
         $this->view = new View();
         $this->auth = $GLOBALS['auth'];
         $this->request = new Request();
+        $this->uri = $GLOBALS['uri'];
     }
 
     /**
@@ -82,10 +83,10 @@ abstract class Table
         }
 
         //Change 'sort' argument in uri
-        $uri = uri_make('sort', $column_name);
+        $uri = $this->uri->uriMake('sort', $column_name);
 
         //Change 'sort_direction' argument in uri
-        $uri = uri_change('sort_direction', $sort_direction_new, $uri);
+        $uri = $this->uri->uriChange('sort_direction', $sort_direction_new, $uri);
 
         //Build html links for sorting
         $hrefs = "<a href='" . $uri . "' class='sort'>" . $column_name_rus . "</a>";

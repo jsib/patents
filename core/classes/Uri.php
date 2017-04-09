@@ -85,4 +85,70 @@ class Uri
     {
         return $_SERVER['REQUEST_URI'];
     }
+    
+    //Searching in for argument with $argument_name in $uri
+    private function uriFindArgument($argument_name, $uri){
+        if(preg_match("/\?$argument_name\=/", $uri) || preg_match("/\&$argument_name\=/", $uri)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * Change value of $argument_name to $argument_value in $uri.
+     * If there was no argument with $argument_name in $uri,
+     * then it will be added to resulting string.
+     */
+    public function uriChange($argument_name, $argument_value, $uri)
+    {
+        //Uri includes "?"
+        if( preg_match("/\?/", $uri) ){
+            //Uri contains searching argument
+            if( $this->uriFindArgument($argument_name, $uri) ) {
+                //Changing value of argument (if value is presented)
+                if($argument_value != "") {
+                    $uri = preg_replace("/\?$argument_name\=[^\&\?]+/", "?$argument_name=$argument_value", $uri);
+                    $uri = preg_replace("/\&$argument_name\=[^\&\?]+/", "&$argument_name=$argument_value", $uri);
+                //Argument deletion (if value is empty)
+                } else {
+                    $uri = preg_replace("/\?$argument_name\=[^\&\?]+/", "?", $uri);
+                    //In case of argument leads after '?' and there were other
+                    //arguments after this argument (which always prepend by &)
+                    preg_replace("/\?\&/", "?", $uri); 
+                    $uri = preg_replace("/\&$argument_name\=[^\&\?]+/", "", $uri);
+                }
+            //Uri doesn't contain searching argument
+            }else{
+                $uri = "{$uri}&{$argument_name}={$argument_value}";
+            }
+        //Uri doesn't contain "?", means that we just add argument with value
+        }else{
+            $uri = "{$uri}?{$argument_name}={$argument_value}";
+        }
+        
+        return $uri;
+    }
+
+    /**
+     * Change value of argument in $_SERVER['URI_REQUEST'] and return result
+     */
+    function uriMake($argument_name = false, $argument_value = "")
+    {
+        if( !$argument_name ) {
+            return $_SERVER['REQUEST_URI'];
+        } else {
+            if( !is_array($argument_name) ){
+                return $this->uriChange($argument_name, $argument_value, $_SERVER['REQUEST_URI']);
+            } else {
+                $arguments = $argument_name;
+                $uri = $_SERVER['REQUEST_URI'];
+                foreach ($arguments as $name=>$value) {
+                    $uri = $this->uriChange($name, $value, $uri);
+                }
+
+                return $uri;
+            }
+        }
+    }
 }

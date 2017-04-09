@@ -93,8 +93,9 @@ trait TableSort
             }
         }
         
-        //Contains empty elements
+        //Contains empty and all elements
         $matrix_empty = [];
+        $matrix_full = [];
 
         //Put all empty elements at the beginning or at the end
         foreach($matrix_sort as $key => $value){
