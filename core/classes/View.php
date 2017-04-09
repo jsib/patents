@@ -30,7 +30,7 @@ class View
      * Store name for parent of $this->view,
      * which is set by $this->extend() method.
      */
-    public $parentView = '';
+    public $parentView = false;
 
     /**
      * If variable $this->name is not found,
@@ -66,7 +66,9 @@ class View
         ob_start();
         
         //Execute parent for $view file and replace collected blocks of content
-        require(VIEWS_PATH.$this->parentView.'.html.php');
+        if ($this->parentView !== false) {
+            require(VIEWS_PATH.$this->parentView.'.html.php');
+        }
         
         //Return ready HTML to controller
         return ob_get_clean();
@@ -135,5 +137,17 @@ class View
     public function assetJS($file)
     {
         echo '<script src="'.\ASSETS_PATH.$file.'"></script>'."\n";
+    }
+    
+    /**
+     * Include view
+     */
+    public function includeView($view)
+    {
+        //Create different instance
+        $view_instance = new View();
+        
+        //Include view
+        echo $view_instance->load($view, $this->data);
     }
 }

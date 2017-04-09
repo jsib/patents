@@ -49,9 +49,11 @@
                             <?php else: ?>
                                 <?php if ($this->table->getColumnType($column) != 'hidden'): ?>
                                     <input type='text' 
-                                           name='Form[<?php echo $row ?>][<?php echo $column ?>]'
-                                           value='<?php echo $value ?>'
-                                           style='margin:0;padding:0;border:5px;width:<?php echo $this->table->getColumnInputWidth($column) ?>'>
+                                        name='Form[<?php echo $row ?>][<?php echo $column ?>]'
+                                        value='<?php echo $value ?>'
+                                        style='margin:0;padding:0;border:5px;width:<?php echo $this->table->getColumnInputWidth($column) ?>'
+                                        class='<?php echo $this->appearance[$row][$column]['class'] ?>'
+                                    >
                                 <?php endif; ?>
                             <?php endif; ?>
                             <!-- //Edit rights -->
@@ -67,33 +69,5 @@
     </form>
 <?php $this->stop('body') ?>
 
-<?php $this->start('topmenu') ?>
-    <!-- Top Menu -->
-    <div id='menu_top'>
-        <div id='menu_top_left_part'>
-            <?php $topmenu_item_iteration = 1 ?>
-            <?php $topmenu_items = (new App\Entity\TopMenu($this->table->country))->getList() ?>
-            <?php //show($topmenu_items) ?>
-            <?php if ( count($topmenu_items) > 0): ?>
-                <?php foreach ($topmenu_items as $item): ?>
-                    <a href='<?php echo $item['href'] ?>' class='<?php echo $item['class'] ?>'><?php echo $item['name_rus'] ?></a>
-                    <span class='divider'></span>
-                    <?php if ($topmenu_item_iteration % 7 == 0): ?>
-                        <br/>
-                    <?php endif; ?>
-                    <?php $topmenu_item_iteration++ ?>
-                <?php endforeach; ?>
-            <?php else: ?>
-                Нет пунктов для верхнего меню.
-            <?php endif; ?>
-        </div>
-        <div id='menu_top_middle_part'>
-        </div>
-        <div id='menu_top_right_part'>
-            Логин: <?php echo $this->table->auth->getSignedInUserName() ?><span style='width:100px;'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><a href="/sign_out/" class='logout'>Выйти</a>
-        </div>
-        <div class='clear'></div>
-    </div>
-    <!-- //Top Menu -->
-<?php $this->stop('topmenu') ?>
+
 

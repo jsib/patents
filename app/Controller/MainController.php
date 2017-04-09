@@ -1,7 +1,7 @@
 <?php
 
 use Core\Controller;
-use App\Table\PatentTable;
+use App\Table\PropertyTable;
 
 class MainController extends Controller
 {
@@ -10,20 +10,26 @@ class MainController extends Controller
         return $this->listAction('russia', 'patents');
     }
     
-    public function listAction($country, $object)
+    public function listAction($country, $property_plural)
     {
+        //Get property single
+        $property = substr( $property_plural, 0, strlen($property_plural)-1 );
+        
         //Save table, should be called before output table
-        $this->save($country, $object);
+        $this->save($country, $property);
         
         //Build table
-        $table = new PatentTable();
+        $table = new PropertyTable();
+        
+        //Set country and property name
         $table->setCountry($country);
+        $table->setProperty($property);
         
         //Return table html
         return $table->build();
     }
     
-    public function deleteAction($country, $object, $id)
+    public function deleteAction($country, $property, $id)
     {
         //Check if user has rights for this action
         if( !$this->auth->userHasRight('edit') ) {
@@ -32,13 +38,13 @@ class MainController extends Controller
         }
 
         //Stop action on incorrect client input
-        $this->stopOnIncorrectObject($object);
-        echo('hello' . $id. $country . $object);
+        $this->stopOnIncorrectObject($property);
+        echo('hello' . $id. $country . $property);
                 
         //Query database
         $this->db->prepare("
             DELETE FROM
-                `" . $object . "s`
+                `" . $property . "s`
             WHERE 
                 id=?
         ")
@@ -46,10 +52,10 @@ class MainController extends Controller
             ->exec();
         
         //Redirect to list of items
-        header('Location: ' . '/' . $country . '/' . $object . '/');
+        header('Location: ' . '/' . $country . '/' . $property . 's/');
     }
     
-    public function addAction($country, $object)
+    public function addAction($country, $property)
     {
         //Check if user has rights for this action
         if( !$this->auth->userHasRight('edit') ) {
@@ -58,12 +64,12 @@ class MainController extends Controller
         }
         
         //Stop action on incorrect client input
-        $this->stopOnIncorrectObject($object);
+        $this->stopOnIncorrectObject($property);
         
         //Query database
         $this->db->prepare("
             INSERT INTO
-                `" . $object . "s`
+                `" . $property . "s`
             SET
                 `country_name`=?
         ")
@@ -71,13 +77,13 @@ class MainController extends Controller
             ->exec();
         
         //Redirect to list of items
-        header('Location: ' . '/' . $country . '/' . $object . '/');
+        header('Location: ' . '/' . $country . '/' . $property . 's/');
     }
     
     /**
      * Save table data
      */
-    private function save($country, $object)
+    private function save($country, $property)
     {
         //Check if cliend wanted to save form
         if ( !isset($_POST['Form']) ) {
@@ -92,13 +98,13 @@ class MainController extends Controller
         }
         
         //Stop action on incorrect client input
-        $this->stopOnIncorrectObject($object);
+        $this->stopOnIncorrectObject($property);
         
         //Loop over form rows and save them
         foreach( $_POST['Form'] as $row => $columns ){
             $this->db->prepare("
                 UPDATE
-                    `" . $object . "s`
+                    `" . $property . "s`
                 SET
                     `name`=?,
                     `comment`=?,
@@ -121,7 +127,7 @@ class MainController extends Controller
                 ->bindParam('s', date("Y-m-d", strtotime($columns['registration'])))
                 ->bindParam('s', date("Y-m-d", strtotime($columns['paid_before'])))
                 ->bindParam('s', date("Y-m-d", strtotime($columns['expire'])))
-                ->bindParam('d', $columns['id'])                                    
+                ->bindParam('d', $columns['id'])
                 ->exec();
         }
     }
@@ -129,9 +135,9 @@ class MainController extends Controller
     /**
      * Stops action if object is incorrect
      */
-    private function stopOnIncorrectObject($object)
+    private function stopOnIncorrectObject($property)
     {
-        if ( $object !== 'patent' && $object !== 'trademark' ) {
+        if ( $property !== 'patent' && $property !== 'trademark' ) {
             error("Error");
             return;
         }

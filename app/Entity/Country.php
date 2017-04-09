@@ -6,7 +6,7 @@ use Core\Database;
 
 class Country
 {
-    public $db;
+    private $db;
     
     public function __construct()
     {

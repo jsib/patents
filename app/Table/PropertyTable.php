@@ -6,34 +6,35 @@ use Core\Table;
 use Core\Date;
 use App\Entity\Country;
 
-class PatentTable extends Table
-{   
+class PropertyTable extends Table
+{
     /**
-     * Table's country name
+     * @var string $country Table's country name
+     * @var string $country_rus Table's country russian name
+     * @var string $property Table's property name
      */
     public $country;
-    
-    /**
-     * Table's country russian name
-     */
     public $country_rus;
+    public $property;
     
     protected function getData()
     {
+        $property_plural = $this->property . 's';
+        
         //Query database and get result
         $result = $this->db->prepare("
             SELECT
-                `patents`.`id` as `id`,
-                `patents`.`name` as `name`,
-                `patents`.`certificate` as `certificate`,
-                `patents`.`request` as `request`,
-                `patents`.`priority` as `priority`,
-                `patents`.`registration` as `registration`,
-                `patents`.`paid_before` as `paid_before`,
-                `patents`.`expire` as `expire`,
-                `patents`.`comment` as `comment`
+                `$property_plural`.`id` as `id`,
+                `$property_plural`.`name` as `name`,
+                `$property_plural`.`certificate` as `certificate`,
+                `$property_plural`.`request` as `request`,
+                `$property_plural`.`priority` as `priority`,
+                `$property_plural`.`registration` as `registration`,
+                `$property_plural`.`paid_before` as `paid_before`,
+                `$property_plural`.`expire` as `expire`,
+                `$property_plural`.`comment` as `comment`
             FROM
-                `patents`
+                `$property_plural`
             WHERE
                 country_name=?
         ")
@@ -59,7 +60,7 @@ class PatentTable extends Table
             if( $this->auth->userHasRight('edit') ){
                 $matrix[$id]['delete'] = "Удалить";
 
-                $this->links[$id]['delete']['href'] = '/' . $this->country . '/patent/delete/' . $patent['id'];
+                $this->links[$id]['delete']['href'] = '/' . $this->country . '/' . $this->property . '/delete/' . $patent['id'];
 
                 $this->appearance[$id]['delete']['style'] = 'color:red;';
                 $this->appearance[$id]['delete']['onclick'] = 
@@ -68,16 +69,20 @@ class PatentTable extends Table
                 $this->appearance[$id]['delete']['style'] = '';
                 $this->appearance[$id]['delete']['onclick'] = '';
                 $this->links[$id]['delete']['href'] = '';
+                $this->appearance[$id]['delete']['class'] = '';
             }
 
             //Clean empty dates
             foreach ($patent as $property => $value) {
+                $this->appearance[$id][$property]['class'] = '';
+                    
                 if (!isset( $this->columns[$property]['type'] )) {
                     continue;
                 }
                 
                 if ($this->columns[$property]['type'] == 'date') {
                     $matrix[$id][$property] = Date::human($value);
+                    $this->appearance[$id][$property]['class'] = 'datepickerTimeField';
                 }
             }
         }
@@ -122,6 +127,7 @@ class PatentTable extends Table
         //Set columns type
         $this->setColumnType('id', 'hidden');
         $this->setColumnType('priority', 'date');
+        $this->setColumnType('registration', 'date');
         $this->setColumnType('paid_before', 'date');
         $this->setColumnType('expire', 'date');
         
@@ -146,12 +152,17 @@ class PatentTable extends Table
         $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
         
         //Set form action
-        $this->formAction = '/' . $this->country . '/patent/';
+        $this->formAction = '/' . $this->country . '/' . $this->property . 's/';
     }
     
     public function setCountry($country)
     {
         $this->country = $country;
+    }
+    
+    public function setProperty($property)
+    {
+        $this->property = $property;
     }
 }
 

@@ -11,7 +11,7 @@
     </head>
     <body>
         <div id="main_area">
-            <?php $this->output('topmenu') ?>
+            <?php $this->includeView('topmenu') ?>
             
             <br/><h1 style='font-size:24pt;'>Товарные знаки и патенты (<?php echo $this->table->country_rus ?>)</h1><br/>
             
@@ -21,8 +21,7 @@
             <div id='manage_menu'>
                 <?php if( $this->table->auth->userHasRight('edit') ): ?>
                     <h3 style='margin-top:30px;'>Действия</h3>
-                    <a href='/<?php echo $this->table->country ?>/patent/add'>Добавить патент</a>
-                    <br/><br/>
+                    <a href='/<?php echo $this->table->country ?>/<?php echo $this->table->property ?>/add'>Добавить <?php if ($this->table->property == 'trademark') {echo "торговый знак";} else {echo "патент";} ?></a><br/><br/>
                 <?php endif; ?>
             </div>
         </div>

@@ -26,7 +26,7 @@ abstract class Table
         @var object $db Store database object
         @var array $data Table data, which we retrieve from database
         @var array $matrix Table data, prepared to pass to sort
-        @var array $appearance Table appearance properties
+        @var array $appearance Table cell appearance properties
         @var array $links Hyperlinks in table
         @var integer $rowHeight Height of all table's rows in pixels
         @var integer $border Inside table borders width in pixels
@@ -107,9 +107,6 @@ abstract class Table
      * Build ready for use table's html
      */
     final public function build(){
-        //Get data for table from database
-        $this->getData();
-        
         //Define headers properties
         $this->setHeader();
         
@@ -118,6 +115,9 @@ abstract class Table
         
         //Set other table properties
         $this->setOtherProperties();
+
+        //Get data for table from database
+        $this->getData();
         
         //Build array to use in view
         $this->prepareData();
