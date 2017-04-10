@@ -1,38 +1,39 @@
 <?php
+
 //Database host
 const DB_HOST = 'localhost';
 
 //Database user
-const DB_USER = 'root';
+const DB_USER = 'ilya';
 
 //Database password
-const DB_PASSWORD = '';
+const DB_PASSWORD = 'local';
 
 //Database name
-const DB_DATABASE = 'patents.dev';
+const DB_DATABASE = 'patents';
 
 //Main project dir path
-const ROOT_PATH = 'C:\WebServers\home\patents.dev\www\\';
+const ROOT_PATH = '/home/patents.acoustic-group.net/www/';
 
 //Path to core dir
-const CORE_PATH = ROOT_PATH . 'core/';
+define(CORE_PATH,  ROOT_PATH . 'core/');
 
 //Path to core classes for autoloader
-const CLASSES_PATH = ROOT_PATH . 'core/classes/';
+define(CLASSES_PATH, ROOT_PATH . 'core/classes/');
 
 //Path to root application dir
-const APP_PATH = ROOT_PATH . 'app/';
+define(APP_PATH, ROOT_PATH . 'app/');
 
 //Path to controllers
-const CONTROLLERS_PATH = APP_PATH . 'Controller/';
+define(CONTROLLERS_PATH, APP_PATH . 'Controller/');
 
 //Encoding of .php, .html, etc source files
-const FILES_ENCODING = 'UTF-8';
+define(FILES_ENCODING, 'UTF-8');
 
 //Path to dir with assets (like css and js files, etc)
-const ASSETS_PATH = '/assets/';
+define(ASSETS_PATH, '/assets/');
 
 //Define path to views files
-const VIEWS_PATH = ROOT_PATH . 'resources/views/';
+define(VIEWS_PATH, ROOT_PATH . 'resources/views/');
 
 

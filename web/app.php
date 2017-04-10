@@ -4,6 +4,9 @@ use Core\Route;
 use Core\Auth;
 use Core\Uri;
 
+//Set default timezone
+date_default_timezone_set('Europe/Moscow');
+
 //Include main config file
 require_once('../app/config.php');
 
