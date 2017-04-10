@@ -30,8 +30,13 @@ class Database
     
     public function __construct()
     {
+        //Make connection
         $this->conn = new \mysqli(\DB_HOST, \DB_USER, \DB_PASSWORD, \DB_DATABASE);
         
+        //Set default encoding and collation
+        $this->query("SET NAMES '". \DB_ENCODING . "'");
+        $this->query("SET CHARACTER SET '". \DB_ENCODING . "'");
+        $this->query("SET SESSION collation_connection = '". \DB_COLLATION . "'");
     }
 
     /**
@@ -205,5 +210,13 @@ class Database
         }
         
         return $this;
+    }
+    
+    /**
+     * Query database
+     */
+    public function query(...$args)
+    {
+        return $this->conn->query(...$args);
     }
 }
