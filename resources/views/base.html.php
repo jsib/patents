@@ -13,7 +13,7 @@
         <div id="main_area">
             <?php $this->includeView('topmenu') ?>
             
-            <br/><h1 style='font-size:24pt;'>Товарные знаки и патенты (<?php echo $this->table->country_rus ?>)</h1><br/>
+            <h1 style='font-size:24pt;'><?php if ($this->table->property == 'trademark') {echo "Торговые знаки";} else {echo "Патенты";} ?> (<?php echo $this->table->country_rus ?>)</h1>
             
             <div id='data_area'>
                 <?php $this->output('body') ?>
@@ -28,14 +28,14 @@
 
         <!--START: Код календаря. Эту штуку надо ставить именно здесь, перед закрывающим body-->
         <script>
-        $(".datepickerTimeField").datepicker({
-                        changeMonth: true,
-                        changeYear: true,
-                        dateFormat: 'dd.mm.yy',
-                        firstDay: 1, changeFirstDay: false,
-                        navigationAsDateFormat: false,
-                        duration: 0,// отключаем эффект появления
-        });
+            $(".datepickerTimeField").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: 'dd.mm.yy',
+                firstDay: 1, changeFirstDay: false,
+                navigationAsDateFormat: false,
+                duration: 0,// отключаем эффект появления
+            });
         </script>
         <!--Используется так <input name="min" value="04.05.2010" class="datepickerTimeField">-->
         <!--Взять здесь http://yapro.ru/web-master/javascript/legkiy-kalendari.html-->

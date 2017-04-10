@@ -1,6 +1,7 @@
 <?php $this->extend('base') ?>
 
 <?php $this->start('body') ?>
+    Количество: <?php echo count($this->matrix) ?>
     <form id='Form' action='<?php echo $this->form_action ?>' method='post' style='margin:0;padding:0;'>
         <table cellspacing='0' cellpadding='1' border='<?php echo $this->border ?>' class='data' 
             style='border:<?php echo $this->border + 1 ?>px solid #09F;'>
@@ -63,11 +64,25 @@
             <?php endforeach; ?>
             <!-- //Table Body -->
         </table>
+        Количество: <?php echo count($this->matrix) ?><br/>
         <?php if( $this->table->auth->userHasRight('edit') ): ?>
             <br/><input type='submit' value='Сохранить'></form>
         <?php endif; ?>
     </form>
 <?php $this->stop('body') ?>
 
-
+<?php $this->start('script') ?>
+    <script>
+        <!-- Source http://yapro.ru/web-master/javascript/legkiy-kalendari.html -->
+        $(".datepickerTimeField").datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: 'dd.mm.yy',
+            firstDay: 1,
+            changeFirstDay: false,
+            navigationAsDateFormat: false,
+            duration: 0, //Disable appearing effect
+        });
+    </script>
+<?php $this->stop('script') ?>
 

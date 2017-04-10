@@ -100,7 +100,7 @@ class PropertyTable extends Table
         $this->addHeaderColumn('request', '№ заявки');
         $this->addHeaderColumn('priority', 'Приоритет');
         $this->addHeaderColumn('registration', 'Регистрация');
-        $this->addHeaderColumn('paid_before', 'Оплачено до');
+        $this->addHeaderColumn('paid_before', 'Оплачено, до');
         $this->addHeaderColumn('expire', 'Срок действия, до');
         
         //Column for 'Delete' action available depends on user rights
@@ -111,14 +111,14 @@ class PropertyTable extends Table
     
     protected function setColumns() {
         //Set columns widths! Keep order here!
-        $this->setColumnWidth('name', '260px');
-        $this->setColumnWidth('comment', '260px');
-        $this->setColumnWidth('certificate', '150px');
-        $this->setColumnWidth('request', '150px');
-        $this->setColumnWidth('priority', '150px');
-        $this->setColumnWidth('registration', '150px');
-        $this->setColumnWidth('expire', '150px');
-        $this->setColumnWidth('paid_before', '150px');
+        $this->setColumnWidth('name', '400px');
+        $this->setColumnWidth('comment', '320px');
+        $this->setColumnWidth('certificate', '100px');
+        $this->setColumnWidth('request', '100px');
+        $this->setColumnWidth('priority', '100px');
+        $this->setColumnWidth('registration', '100px');
+        $this->setColumnWidth('expire', '100px');
+        $this->setColumnWidth('paid_before', '100px');
         //Column for 'Delete' action available depends on user rights
         if ( $this->auth->userHasRight('edit') ) {
             $this->setColumnWidth('delete', '70px');
@@ -132,13 +132,13 @@ class PropertyTable extends Table
         $this->setColumnType('expire', 'date');
         
         //Set columns input fields width
-        $this->setColumnInputWidth('name', '260px');
-        $this->setColumnInputWidth('comment', '260px');
-        $this->setColumnInputWidth('certificate', '150px');
-        $this->setColumnInputWidth('request', '150px');
-        $this->setColumnInputWidth('priority', '150px');
-        $this->setColumnInputWidth('registration', '150px');
-        $this->setColumnInputWidth('expire', '150px');
+        $this->setColumnInputWidth('name', '400px');
+        $this->setColumnInputWidth('comment', '320px');
+        $this->setColumnInputWidth('certificate', '100px');
+        $this->setColumnInputWidth('request', '100px');
+        $this->setColumnInputWidth('priority', '100px');
+        $this->setColumnInputWidth('registration', '100px');
+        $this->setColumnInputWidth('expire', '100px');
     }
     
     protected function setOtherProperties()
