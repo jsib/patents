@@ -39,7 +39,6 @@ class MainController extends Controller
 
         //Stop action on incorrect client input
         $this->stopOnIncorrectObject($property);
-        echo('hello' . $id. $country . $property);
                 
         //Query database
         $this->db->prepare("
