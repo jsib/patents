@@ -1,7 +1,7 @@
 <div id='menu_top'>
     <div id='menu_top_left_part'>
         <!-- Countries -->
-        <?php $topmenu_items = (new App\Entity\TopMenu($this->table->country, $this->table->property))->getCountryList() ?>
+        <?php $topmenu_items = (new App\Entity\TopMenu($this->table->country, $this->table->possession))->getCountryList() ?>
         <?php //show($topmenu_items) ?>
         <?php if ( count($topmenu_items) > 0): ?>
             <?php foreach ($topmenu_items as $item): ?>
@@ -14,7 +14,7 @@
         <!-- //Countries -->
         <br/>
         <!-- Properties -->
-        <?php $topmenu_items = (new App\Entity\TopMenu($this->table->country, $this->table->property))->getPropertyList() ?>
+        <?php $topmenu_items = (new App\Entity\TopMenu($this->table->country, $this->table->possession))->getPossesionList() ?>
         <?php //show($topmenu_items) ?>
         <?php if ( count($topmenu_items) > 0): ?>
             <?php foreach ($topmenu_items as $item): ?>

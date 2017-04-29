@@ -113,4 +113,12 @@ trait TableAccessors
     {
         $this->defaultSortDirection = $direction;
     }
+    
+    /**
+     * Set view file
+     */
+    final protected function setViewFile($file)
+    {
+        $this->viewFile = $file;
+    }
 }

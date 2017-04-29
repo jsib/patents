@@ -43,6 +43,9 @@ require_once(APP_PATH . 'auth.php');
 //Build routes table
 $route->build();
 
+//Start test if any presented
+$route->startTest();
+
 //Start session, etc
 $auth->init();
 

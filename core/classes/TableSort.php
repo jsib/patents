@@ -130,6 +130,11 @@ trait TableSort
 
         //Change source matrix to new one
         $this->matrix = $matrix_new;
-    }    
+    }
+    
+    public function dontUseSorting()
+    {
+        $this->dontUseSorting = true;
+    }
 }
 

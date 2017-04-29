@@ -6,7 +6,7 @@ use Core\Table;
 use Core\Date;
 use App\Entity\Country;
 
-class PropertyTable extends Table
+class PossessionTable extends Table
 {
     /**
      * @var string $country Table's country name
@@ -15,11 +15,11 @@ class PropertyTable extends Table
      */
     public $country;
     public $country_rus;
-    public $property;
+    public $possession;
     
     protected function getData()
     {
-        $property_plural = $this->property . 's';
+        $property_plural = $this->possession . 's';
         
         //Query database and get result
         $result = $this->db->prepare("
@@ -60,7 +60,7 @@ class PropertyTable extends Table
             if( $this->auth->userHasRight('edit') ){
                 $matrix[$id]['delete'] = "Удалить";
 
-                $this->links[$id]['delete']['href'] = '/' . $this->country . '/' . $this->property . '/delete/' . $patent['id'];
+                $this->links[$id]['delete']['href'] = '/' . $this->country . '/' . $this->possession . '/delete/' . $patent['id'];
 
                 $this->appearance[$id]['delete']['style'] = 'color:red;';
                 $this->appearance[$id]['delete']['onclick'] = 
@@ -148,11 +148,14 @@ class PropertyTable extends Table
         $this->setDefaultSortColumn('id');
         $this->setDefaultSortDirection('asc');
         
+        //Set view file
+        $this->setViewFile('tables\possessions\table');
+        
         //Set country name
         $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
         
         //Set form action
-        $this->formAction = '/' . $this->country . '/' . $this->property . 's/';
+        $this->formAction = '/' . $this->country . '/' . $this->possession . 's/';
     }
     
     public function setCountry($country)
@@ -160,9 +163,9 @@ class PropertyTable extends Table
         $this->country = $country;
     }
     
-    public function setProperty($property)
+    public function setPossession($property)
     {
-        $this->property = $property;
+        $this->possession = $property;
     }
 }
 

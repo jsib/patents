@@ -10,7 +10,7 @@ use Core\Request;
 /**
  * Table class provides machinery for easy HTML tables creating
  */
-abstract class Table
+abstract class Table extends Base
 {
     use TableDefinition;
     use TableAccessors;
@@ -23,7 +23,6 @@ abstract class Table
     public $auth, $formAction;
     
     /**
-        @var object $db Store database object
         @var array $data Table data, which we retrieve from database
         @var array $matrix Table data, prepared to pass to sort
         @var array $appearance Table cell appearance properties
@@ -32,20 +31,24 @@ abstract class Table
         @var integer $border Inside table borders width in pixels
         @var array $headers  Table's headers properties
         @var array $columns Table's columns properties
+        @var boolean $dontUseSorting If true, then we don't need to sort table
         @var string $sortColumn Sort table by this column
         @var string $sortDirection Sort table in this direction
         @var string $defaultSortColumn Default sort column for table
         @var string $defaultSortDirection Default sort direction for table
+     * @var string $viewFile Table's view file
      */
-    protected $db, $data, $matrix, $appearance, $links, $rowHeight,
+    protected $data, $matrix, $appearance, $links, $rowHeight,
         $border, $headers, $columns, $sortColumn, $sortDirection,
-        $defaultSortColumn, $defaultSortDirection, $uri;
+        $dontUseSorting = false, $defaultSortColumn = false,
+        $defaultSortDirection = false, $uri, $viewFile = '';
     
     final public function __construct()
     {
+        //Inherit constuctor from parent
+        parent::__construct();
+        
         //Make injections
-        $this->db = new Database();
-        $this->view = new View();
         $this->auth = $GLOBALS['auth'];
         $this->request = new Request();
         $this->uri = $GLOBALS['uri'];
@@ -122,14 +125,23 @@ abstract class Table
         //Build array to use in view
         $this->prepareData();
         
-        //Get sort column and direction
-        $this->getSortColumn();
-        $this->getSortDirection();
+        //Get sort column and direction or sorting is not needed
+        if ($this->defaultSortDirection !== false ) {
+            $this->getSortColumn();
+            $this->getSortDirection();
+        }
         
-        //Sort table's dataa
-        $this->sortData();
+        //Sort table's data
+        if ($this->dontUseSorting === false) {
+            $this->sortData();
+        }
         
-        return $this->view->load('table', [
+        //Check if view defined
+        if ($this->viewFile === '') {
+            error("View file for table is not defined");
+        }
+        
+        return $this->view->load($this->viewFile, [
             'headers' => $this->headers,
             'rowHeight' => $this->rowHeight,
             'columns' => $this->columns,

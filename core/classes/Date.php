@@ -9,15 +9,16 @@ class Date
     /**
      * Convert date to str
      */
-    public static function human($value)
+    public static function human($date_input, $replacement = '')
     {
         //Get formatted date
-        $date = date("d.m.Y", strtotime($value));
+        $date = date( "d.m.Y", strtotime($date_input) );
         
-        if($date == '31.12.1969' || $date == '01.01.1970') {
-            return '';
-        } else {
-            return $date;
+        //Date is empty, apply replacement
+        if( $date == '31.12.1969' || $date == '01.01.1970' ) {
+            return $replacement;
         }
+        
+        return $date;
     }
 }

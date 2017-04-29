@@ -37,8 +37,8 @@ class Debug
      */
     public static function dump($input, $label = '')
     {
-        if ($label !== '') {
-            echo '<h1>'.$label.":</h1><br/>";
+        if ($label != '') {
+            echo '<h1>'.$label.":</h1>";
         }
         
         //Special condition for boolean values

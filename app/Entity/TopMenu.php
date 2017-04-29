@@ -8,7 +8,7 @@ class TopMenu
 {
     //Store current opened country and property
     protected $country;
-    protected $property;
+    protected $possession;
     
     /**
      * Store database object
@@ -21,7 +21,7 @@ class TopMenu
         
         //Get current opened country and property
         $this->country = $country;
-        $this->property = $property;
+        $this->possession = $property;
     }
     
     /**
@@ -55,7 +55,7 @@ class TopMenu
         foreach( $items as $id => $item ) {
             //Set class and hyperlink for item
             $items[$id]['class'] = $this->getHrefClass( $this->country, "=", $item['name'] );
-            $items[$id]['href'] = '/' . $item['name'] . '/' . $this->property . 's/';
+            $items[$id]['href'] = '/' . $item['name'] . '/' . $this->possession . 's/';
         }
 
         return $items;
@@ -66,14 +66,14 @@ class TopMenu
      * 
      * @return array Top menu items
      */
-    public function getPropertyList()
+    public function getPossesionList()
     {
         //Retrieve all top menu items
         $result = $this->db->prepare("
             SELECT
                 *
             FROM
-                `properties`
+                `possessions`
             ORDER BY
                 `order` ASC
         ")
@@ -91,7 +91,7 @@ class TopMenu
         //Loop over menu items
         foreach( $items as $id => $item ) {
             //Set class and hyperlink for item
-            $items[$id]['class'] = $this->getHrefClass( $this->property.'s', "=", $item['name'] );
+            $items[$id]['class'] = $this->getHrefClass( $this->possession.'s', "=", $item['name'] );
             $items[$id]['href'] = '/' . $this->country . '/' . $item['name'] . '/';
         }
 

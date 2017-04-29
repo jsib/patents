@@ -1,5 +1,7 @@
 <?php
 
+namespace Core;
+
 class Email
 {
     private function getData($smtp_conn)
@@ -33,8 +35,6 @@ class Email
         $header.="Content-Type: text/html; charset=utf-8\r\n";
         $header.="Content-Transfer-Encoding: 8bit\r\n";
         
-        echo $header;
-
         $smtp_conn = fsockopen("192.168.10.8", 25, $errno, $errstr, 10);
         if(!$smtp_conn) {print "соединение с серверов не прошло"; fclose($smtp_conn); exit;}
         $data = $this->getData($smtp_conn);

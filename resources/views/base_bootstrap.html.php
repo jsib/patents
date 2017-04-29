@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Патенты и торговые знаки</title>
+    <title>Патенты и товарные знаки</title>
     <!-- Link CSS files -->
     <?php $this->assetCSS('vendor/bootstrap/dist/css/bootstrap.min.css') ?>
     <?php $this->assetCSS('css/signin.css') ?>

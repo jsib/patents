@@ -408,7 +408,7 @@ class Route
     }
     
     /**
-     * Starts test if necessary
+     * Start test if necessary
      */
     public function startTest()
     {
@@ -425,7 +425,7 @@ class Route
             !$this->uri->parse()->getPath(2)
         ) {
 
-            require_once '../tests/'.$this->uri->parse()->getPath(1).'.php';
+            require_once ROOT_PATH . 'web/tests/'.$this->uri->parse()->getPath(1).'.php';
             exit;
         }        
     }

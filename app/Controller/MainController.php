@@ -1,7 +1,7 @@
 <?php
 
 use Core\Controller;
-use App\Table\PropertyTable;
+use App\Table\PossessionTable;
 
 class MainController extends Controller
 {
@@ -10,26 +10,26 @@ class MainController extends Controller
         return $this->listAction('russia', 'patents');
     }
     
-    public function listAction($country, $property_plural)
+    public function listAction($country, $possession_plural)
     {
         //Get property single
-        $property = substr( $property_plural, 0, strlen($property_plural)-1 );
+        $possession = substr( $possession_plural, 0, strlen($possession_plural)-1 );
         
         //Save table, should be called before output table
-        $this->save($country, $property);
+        $this->save($country, $possession);
         
         //Build table
-        $table = new PropertyTable();
+        $table = new PossessionTable();
         
         //Set country and property name
         $table->setCountry($country);
-        $table->setProperty($property);
+        $table->setPossession($possession);
         
         //Return table html
         return $table->build();
     }
     
-    public function deleteAction($country, $property, $id)
+    public function deleteAction($country, $possession, $id)
     {
         //Check if user has rights for this action
         if( !$this->auth->userHasRight('edit') ) {
@@ -38,12 +38,12 @@ class MainController extends Controller
         }
 
         //Stop action on incorrect client input
-        $this->stopOnIncorrectObject($property);
+        $this->stopOnIncorrectObject($possession);
                 
         //Query database
         $this->db->prepare("
             DELETE FROM
-                `" . $property . "s`
+                `" . $possession . "s`
             WHERE 
                 id=?
         ")
@@ -51,10 +51,10 @@ class MainController extends Controller
             ->exec();
         
         //Redirect to list of items
-        header('Location: ' . '/' . $country . '/' . $property . 's/');
+        header('Location: ' . '/' . $country . '/' . $possession . 's/');
     }
     
-    public function addAction($country, $property)
+    public function addAction($country, $possession)
     {
         //Check if user has rights for this action
         if( !$this->auth->userHasRight('edit') ) {
@@ -63,12 +63,12 @@ class MainController extends Controller
         }
         
         //Stop action on incorrect client input
-        $this->stopOnIncorrectObject($property);
+        $this->stopOnIncorrectObject($possession);
         
         //Query database
         $this->db->prepare("
             INSERT INTO
-                `" . $property . "s`
+                `" . $possession . "s`
             SET
                 `country_name`=?
         ")
@@ -76,13 +76,13 @@ class MainController extends Controller
             ->exec();
         
         //Redirect to list of items
-        header('Location: ' . '/' . $country . '/' . $property . 's/');
+        header('Location: ' . '/' . $country . '/' . $possession . 's/');
     }
     
     /**
      * Save table data
      */
-    private function save($country, $property)
+    private function save($country, $possession)
     {
         //Check if cliend wanted to save form
         if ( !isset($_POST['Form']) ) {
@@ -97,13 +97,13 @@ class MainController extends Controller
         }
         
         //Stop action on incorrect client input
-        $this->stopOnIncorrectObject($property);
+        $this->stopOnIncorrectObject($possession);
         
         //Loop over form rows and save them
         foreach( $_POST['Form'] as $row => $columns ){
             $this->db->prepare("
                 UPDATE
-                    `" . $property . "s`
+                    `" . $possession . "s`
                 SET
                     `name`=?,
                     `comment`=?,
@@ -134,9 +134,9 @@ class MainController extends Controller
     /**
      * Stops action if object is incorrect
      */
-    private function stopOnIncorrectObject($property)
+    private function stopOnIncorrectObject($possession)
     {
-        if ( $property !== 'patent' && $property !== 'trademark' ) {
+        if ( $possession !== 'patent' && $possession !== 'trademark' ) {
             error("Error");
             return;
         }

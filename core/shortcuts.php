@@ -5,7 +5,7 @@
  */
 function dump(...$args)
 {
-    return Debug::dump($args);
+    return Debug::dump(...$args);
 }
 
 /**
