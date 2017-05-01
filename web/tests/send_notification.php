@@ -30,9 +30,8 @@ spl_autoload_register('Autoloader::load');
 //Connect to database
 $db = new Database();
 
-$table = new PossessionEmailTable();
+$notify = new Notify();
 
-//Return table html
-return $table->build();
+$notify->run();
 
 ?>

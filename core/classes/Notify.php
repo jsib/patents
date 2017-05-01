@@ -6,54 +6,38 @@ use App\Table\PossessionEmailTable;
 
 class Notify extends Base
 {
-    /**
-     * List, who recieve notification
-     */
-    const RECIPIENTS = [
-        'pochta2id@gmail.com'
-        //'ilya.domyshev@acoustic.ru',
-        //'alex@acoustic.ru',
-        //'andrey.patrushev@acoustic.ru'
-    ];
     
-    /**
-     * List of possesions retrieved from database
-     */
+    /** List of possesions retrieved from database */
     private $possessions = [];
     
     public function run()
     {
-        //
+        //Get possessions list html
         $table = new PossessionEmailTable();
-        $table->build();
+        $possessions_list = $table->build();
+        
+        //Get subject
+        $subject = $this->getSubject();
         
         //Create email object instance
         //$email = new Email();
 
         //Send message
-        foreach( RECIEVERS as $recipient ) {
-            $who_recieve_html="";	
-
-            //Build text - who recieve email
-            foreach (RECIEVERS as $recieverWHO) {
-                if ($recipient!=$recieverWHO) {
-                    $who_recieve_html .= $recieverWHO . "<br/>";		
-                }
-            }
-
-            //Who else recieve email
-            if ($who_recieve_html == "") {
-                $who_recieve_html = "Данное письмо получаете только Вы.<br/>";
-            }else{
-                $who_recieve_html = "Данное письмо также получают:<br/>".$who_recieve_html;
-            }
-            $who_recieve_html = $who_recieve_html . "<br/>" . "Список патентов:";
-
-            //Sending
-            //$email->sendMail($reciever, $topic, $letter_comment . $who_recieve_html . $body);
-
-            \dump($topic, '$topic');
-            \dump($body, '$body');
+        foreach(RECIPIENTS as $recipient) {
+            //Form unique body for each recipient
+            $body = $this->getComment() .
+                $this->getOtherRecipientsList($recipient) .
+                "<br/><br/>Ниже список товарных знаков и патентов осортирован" . 
+                "по полям 'Оплачено, до' или 'Срок действия, до' в зависимости" . 
+                "от того, что наступает раньше:<br/><br/>" .
+                $possessions_list;
+            
+            dump($subject);
+            echo $body;
+            break;
+            
+            //Sending email
+            //$email->sendMail($recipient, $subject, $body);
         }        
     }
     
@@ -69,9 +53,39 @@ class Notify extends Base
             "10" => "октябрь", "11" => "ноябрь", "12" => "декабрь"
         ]; 
         
-        $subject = "Напоминание по продлению патентов и товарных знаков (" . $months[ date("m") ] . ")";
+        return "Напоминание по продлению патентов и товарных знаков (" .
+            $months[ date("m") ] . " " . date("Y") . ")";
     }
     
+    /**
+     * Get html with information who recieve notification
+     */
+    private function getOtherRecipientsList($target_recipient)
+    {
+        //Other recipients list in html format
+        $recipients_html = '';	
+
+        //Build html - who recieve email
+        foreach (RECIPIENTS as $recipient) {
+            if ($target_recipient != $recipient) {
+                $recipients_html .= $recipient . "<br/>";		
+            }
+        }
+
+        //Only $target_recipient get this email
+        if ($recipients_html == '') {
+            return "Данное письмо получаете только Вы.";
+        }
+        
+        //Other recipients also get this email
+        return "Данное письмо также получают:<br/>" . $recipients_html;
+    }
+    
+    private function getComment()
+    {
+        $view = new View();
+        return $view->load('tables/notify/notify');
+    }
 }
 
 

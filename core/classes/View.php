@@ -58,12 +58,13 @@ class View
         
         //Store the view which we work with
         $this->view = $view;
+
+        //Start buffering output
+        ob_start();
         
         //Execute child view file and collect blocks of content
         //to $this->blocks property.
         require(VIEWS_PATH.$view.'.html.php');
-        
-        ob_start();
         
         //Execute parent for $view file and replace collected blocks of content
         if ($this->parentView !== false) {

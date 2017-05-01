@@ -27,8 +27,6 @@ class PossessionEmailTable extends Table
             (SELECT * FROM `patents`)
             UNION
             (SELECT * FROM `trademarks`)
-            ORDER BY
-                `expire` ASC
         ")
             ->exec()
             ->getResult();
@@ -78,6 +76,8 @@ class PossessionEmailTable extends Table
                 }
             }
         }
+        
+        $this->sortDataByExpirePaid($possessions_ready);
         
         $this->matrix = $possessions_ready;
     }
@@ -130,6 +130,43 @@ class PossessionEmailTable extends Table
         } else {
             return 'green';
         }
+    }
+    
+    protected function sortDataByExpirePaid(&$data)
+    {
+        //Keep sorting order here
+        $sorted = [];
+        
+        foreach ($data as $key => $possession) {
+            $expire = strtotime($possession['expire']);
+            $paid = strtotime($possession['paid_before']);
+            
+            if ($expire == '') {
+                $expire = 10000000000;
+            }
+            
+            if ($paid == '') {
+                $paid = 10000000000;
+            }
+            
+            //Take later date
+            if ($expire <= $paid) {
+                $sorted[$key] = $expire;
+            } else {
+                $sorted[$key] = $paid;
+            }
+        }
+        
+        //Sort by value
+        asort($sorted);
+        
+        //Prepare result array
+        foreach($sorted as $key => $empty) {
+            $ready_data[$key] = $data[$key];
+        }
+        
+        //Replace given array
+        $data = $ready_data;
     }
 }
 
