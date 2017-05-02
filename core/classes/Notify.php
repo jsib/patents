@@ -27,13 +27,14 @@ class Notify extends Base
             //Form unique body for each recipient
             $body = $this->getComment() .
                 $this->getOtherRecipientsList($recipient) .
-                "<br/><br/>Ниже список товарных знаков и патентов осортирован" . 
-                "по полям 'Оплачено, до' или 'Срок действия, до' в зависимости" . 
-                "от того, что наступает раньше:<br/><br/>" .
+                "<br/><br/>Ниже список товарных знаков и патентов отсортирован " . 
+                "по полям 'Оплачено, до' или 'Срок действия, до' в зависимости " . 
+                "от того, что наступает раньше.<br/>Если дата ни для одного из двух полей " . 
+		"не задана, то такие строки будут находиться в самом низу списка.<br/><br/>" .
                 $possessions_list;
             
-            dump($subject);
-            echo $body;
+            //dump($subject);
+            //echo $body;
             
             //Sending email
             $email->sendMail($recipient, $subject, $body);
@@ -67,7 +68,7 @@ class Notify extends Base
         //Build html - who recieve email
         foreach (RECIPIENTS as $recipient) {
             if ($target_recipient != $recipient) {
-                $recipients_html .= $recipient . "<br/>";		
+                $recipients_html .= "<br/>" . $recipient;
             }
         }
 
@@ -77,7 +78,7 @@ class Notify extends Base
         }
         
         //Other recipients also get this email
-        return "Данное письмо также получают:<br/>" . $recipients_html;
+        return "Данное письмо также получают:" . $recipients_html;
     }
     
     private function getComment()

@@ -408,24 +408,24 @@ class Route
     }
     
     /**
-     * Start test if necessary
+     * Start services if necessary
      */
-    public function startTest()
+    public function startService()
     {
-        if ($this->uri->parse()->getPath(0) === 'tests' &&
+        if ($this->uri->parse()->getPath(0) === 'services' &&
             $this->uri->parse()->getPath(1) &&
             $this->uri->parse()->getPath(2)
         ) {
-            require_once '../tests/'.$this->uri->parse()->getPath(1).'/'.$this->uri->parse()->getPath(2).'.php';
+            require_once '../services/'.$this->uri->parse()->getPath(1).'/'.$this->uri->parse()->getPath(2).'.php';
             exit;
         }
 
-        if ($this->uri->parse()->getPath(0) === 'tests' &&
+        if ($this->uri->parse()->getPath(0) === 'services' &&
             $this->uri->parse()->getPath(1) &&
             !$this->uri->parse()->getPath(2)
         ) {
 
-            require_once ROOT_PATH . 'web/tests/'.$this->uri->parse()->getPath(1).'.php';
+            require_once ROOT_PATH . 'web/services/'.$this->uri->parse()->getPath(1).'.php';
             exit;
         }        
     }
