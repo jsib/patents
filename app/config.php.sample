@@ -42,4 +42,8 @@ const ASSETS_PATH = '/assets/';
 //Define path to views files
 const VIEWS_PATH = ROOT_PATH . 'resources/views/';
 
-
+//Recipients of email notification
+const RECIPIENTS = [
+    //'email1@example.com',
+    //'email2@example.com'
+];

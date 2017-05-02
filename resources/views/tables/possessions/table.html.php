@@ -1,4 +1,4 @@
-<?php $this->extend('tables\possessions\base') ?>
+<?php $this->extend('tables/possessions/base') ?>
 
 <?php $this->start('body') ?>
     Количество: <?php echo count($this->matrix) ?>

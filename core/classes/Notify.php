@@ -20,7 +20,7 @@ class Notify extends Base
         $subject = $this->getSubject();
         
         //Create email object instance
-        //$email = new Email();
+        $email = new Email();
 
         //Send message
         foreach(RECIPIENTS as $recipient) {
@@ -34,10 +34,9 @@ class Notify extends Base
             
             dump($subject);
             echo $body;
-            break;
             
             //Sending email
-            //$email->sendMail($recipient, $subject, $body);
+            $email->sendMail($recipient, $subject, $body);
         }        
     }
     

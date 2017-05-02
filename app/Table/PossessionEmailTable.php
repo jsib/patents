@@ -112,7 +112,7 @@ class PossessionEmailTable extends Table
         $this->dontUseSorting();
         
         //Set view file
-        $this->setViewFile('tables\notify\table');
+        $this->setViewFile('tables/notify/table');
     }
     
     

@@ -149,7 +149,7 @@ class PossessionTable extends Table
         $this->setDefaultSortDirection('asc');
         
         //Set view file
-        $this->setViewFile('tables\possessions\table');
+        $this->setViewFile('tables/possessions/table');
         
         //Set country name
         $this->country_rus = (new Country())->getCountry($this->country)['name_rus'];
