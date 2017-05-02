@@ -17,6 +17,10 @@ class PossessionEmailTable extends Table
     public $country_rus;
     public $property;
 
+    /** Timestamp for not defined dates */
+    private $notDefinedTimestamp = 10000000000;
+
+
     /**
      * Get possessions list from database
      */    
@@ -61,7 +65,7 @@ class PossessionEmailTable extends Table
             $possessions_ready[$key]['country'] = $countries[$possession['country_name']]['name_rus'];
             
             //Appearance
-            $this->appearance[$key]['expire']['style'] = 'color:' . $this->getColor($possession['expire']) . ';';
+//            $this->appearance[$key]['expire']['style'] = 'color:' . $this->getColor($possession['expire']) . ';';
             
             //Format dates
             foreach ($possession as $property => $value) {
@@ -76,8 +80,20 @@ class PossessionEmailTable extends Table
                 }
             }
         }
-        
-        $this->sortDataByExpirePaid($possessions_ready);
+
+        //Labels for dates
+        $labels = [];
+
+        //Sort data array and create labels array
+        $this->sortAndLabelDataByExpirePaid($possessions_ready, $labels);
+
+        foreach ($possessions_ready as $key => $value) {
+            foreach (['expire', 'paid_before'] as $column) {
+                if (isset($labels[$key][$column])) {
+                    $this->appearance[$key][$column]['style'] = 'color:' . $labels[$key][$column] . ';';
+                }
+            }
+        }
         
         $this->matrix = $possessions_ready;
     }
@@ -131,29 +147,46 @@ class PossessionEmailTable extends Table
             return 'green';
         }
     }
-    
-    protected function sortDataByExpirePaid(&$data)
+
+    /**
+* Sort data by date of expiration and create labels for this dates
+     *
+     * @param $data
+     * @param $labels
+     */
+    protected function sortAndLabelDataByExpirePaid(&$data, &$labels)
     {
         //Keep sorting order here
         $sorted = [];
-        
+
         foreach ($data as $key => $possession) {
             $expire = strtotime($possession['expire']);
             $paid = strtotime($possession['paid_before']);
             
             if ($expire == '') {
-                $expire = 10000000000;
+                $expire = $this->notDefinedTimestamp;
             }
             
             if ($paid == '') {
-                $paid = 10000000000;
+                $paid = $this->notDefinedTimestamp;
             }
-            
+
             //Take later date
             if ($expire <= $paid) {
                 $sorted[$key] = $expire;
+
+                //Create label
+                $labels[$key]['expire'] = $this->defineExpiredDateStyle($expire);
+
+                //Create extra label
+                if ($expire == $paid) {
+                    $labels[$key]['paid_before'] = $labels[$key]['expire'];
+                }
             } else {
                 $sorted[$key] = $paid;
+
+                //Create label
+                $labels[$key]['paid_before'] =  $this->defineExpiredDateStyle($paid);
             }
         }
         
@@ -167,6 +200,38 @@ class PossessionEmailTable extends Table
         
         //Replace given array
         $data = $ready_data;
+    }
+
+    /**
+     * Define if date is expired
+     *
+     * @param $timestamp
+     * @return bool
+     */
+    private function defineExpiredDateStyle($timestamp)
+    {
+        //Behavior for not defined dates
+        if ($timestamp == $this->notDefinedTimestamp) {
+            return 'black';
+        }
+
+        $age_sec = $timestamp - strtotime(date("d-m-Y"));
+
+        $age = ($age_sec - ($age_sec % (3600 * 24))) / (3600 * 24);
+        //dump($age_sec, date('d.m.Y', $timestamp));
+
+        //'Red' age
+        if ($age < 30) {
+            return 'red';
+        }
+
+        //'Orange' age
+        if ($age < 90) {
+            return 'orange';
+        }
+
+        //In other cases
+        return 'black';
     }
 }
 

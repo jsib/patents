@@ -29,7 +29,7 @@
                                        value='<?php echo $value ?>'>
                                 <?php continue; ?>
                             <?php endif; ?>
-                        <td style='<?php echo $this->table->getCellAppearance($row, $column) ?>;height:<?php echo $this->rowHeight ?>px;padding-left:8px;'>
+                        <td style='<?php echo $this->table->getCellAppearanceStyle($row, $column) ?>;height:<?php echo $this->rowHeight ?>px;padding-left:8px;'>
                             <!-- No edit rights -->
                             <?php if( !$this->table->auth->userHasRight('edit') || isset($this->links[$row][$column])): ?>
                                 <!-- Text with hyperlink -->

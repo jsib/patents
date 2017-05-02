@@ -17,7 +17,7 @@
         <tr>
             <?php foreach($this->columns as $column => $empty): ?>
                 <?php $value = $this->matrix[$row][$column] ?>
-                <td style='width:<?php echo $this->table->getColumnWidth($column) ?>;<?php echo $this->table->getCellAppearance($row, $column) ?>;height:<?php echo $this->rowHeight ?>px;padding-left:8px;'>
+                <td style='width:<?php echo $this->table->getColumnWidth($column) ?>;<?php echo $this->table->getCellAppearanceStyle($row, $column) ?>;height:<?php echo $this->rowHeight ?>px;padding-left:8px;'>
                     <?php echo $value ?>
                 </td>
             <?php endforeach; ?>

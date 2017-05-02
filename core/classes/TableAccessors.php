@@ -79,13 +79,13 @@ trait TableAccessors
      /**
      * Get cell appearance
      */
-    final public function getCellAppearance($row, $column)
+    final public function getCellAppearanceStyle($row, $column)
     {   
-        if ( !isset($this->matrix[$row][$column]) ) {
+        if ( !isset($this->appearance[$row][$column]['style']) ) {
             return '';
         }
         
-        return $this->matrix[$row][$column];
+        return $this->appearance[$row][$column]['style'];
     }
     
     /**
